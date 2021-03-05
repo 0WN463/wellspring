@@ -1,6 +1,7 @@
 # Wellspring
 
 Wellspring is a project to archive all the knowledge that I have acquired during my academic pursuit.
+Note that it is displayed much better on [nbviewer](https://nbviewer.jupyter.org/github/0WN463/wellspring/tree/main/) rather than on GitHub.
 
 ## Goal
 To archive the knowledge such that:
