@@ -2,16 +2,16 @@ import numpy as np
 from .perceptron import Perceptron
 
 class LearningPerceptron(Perceptron):
-    def __init__(self, size, weights=None, learning_rate=1):
+    def __init__(self, size, activation_function, weights=None, learning_rate=1):
         if weights is None:
-            weights = np.random.rand(size+1)  
+            weights = np.random.rand(size+1)*2-1
         weights = np.array(weights)
         assert weights.shape == (size+1,)
-        super().__init__(size, weights)
+        super().__init__(size, activation_function, weights=weights)
         self.learning_rate = learning_rate
 
     def calculate_error(self, input, correct_label):
-        return correct_label - self.classify(input)
+        return correct_label - self.get_output(input)
     
     def update_weights(self, input, error):
         self.weights = self.weights + self.learning_rate * error * np.insert(input, 0, 1)

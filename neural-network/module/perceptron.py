@@ -1,13 +1,14 @@
 import numpy as np
 
 class Perceptron:
-    def __init__(self, size, weights=None):
+    def __init__(self, size, activation_function, weights=None):
         if weights is None:
-            weights = np.random.rand(size+1)  
+            weights = np.random.rand(size+1) * 2 -1
         weights = np.array(weights)
         assert weights.shape == (size+1,)
         self.weights = weights
         self.size = size
+        self.activation_function = activation_function
         
     def induce_field(self, input):
         input = np.array(input)
@@ -16,9 +17,11 @@ class Perceptron:
         return self.weights.T @ input
     
     def squash(self, induced_field):
-        return 0 if induced_field < 0 else 1
+        return self.activation_function.apply(induced_field)
     
-    def classify(self, input):
+    def get_output(self, input):
         field = self.induce_field(input)
         output = self.squash(field)
         return output
+
+

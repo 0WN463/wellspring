@@ -1,8 +1,7 @@
 from .learning_perceptron import LearningPerceptron
-import numpy as np
+from .activation_function import Linear
 
 class RegressionPerceptron(LearningPerceptron):
-    '''Main difference is the lack of squash and classify function'''
-        
-    def calculate_error(self, input, correct_label):
-        return correct_label - self.induce_field(input)
+    def __init__(self, size, weights=None, learning_rate=1):
+        super().__init__(size, Linear(), weights, learning_rate)
+
