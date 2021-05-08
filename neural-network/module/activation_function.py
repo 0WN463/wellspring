@@ -8,6 +8,9 @@ class Linear:
     def apply(self, induced_field):
         return induced_field
 
+    def diff(self, x):
+        return 1
+
 class Sigmoid:
     def apply(self, x):
         return 1/(1+math.exp(-x))
