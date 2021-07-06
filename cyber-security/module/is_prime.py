@@ -1,0 +1,1 @@
+../../discrete-structures/module/is_prime.py
