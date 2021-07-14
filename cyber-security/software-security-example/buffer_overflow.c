@@ -4,9 +4,10 @@ void change_value(char index, char value) {
 	char arr[10];
 	int b = 100;
 	printf("The value of b is %d\n", b);	
-	printf("Changing index %d of a to %d\n", index, value);
 	printf("The return address is %p\n", __builtin_return_address(0));
 	
+	printf("\nChanging index %d of a to %d\n\n", index, value);
+
 	arr[index] = value;
 	
 	printf("The value of b is %d\n", b);	
