@@ -31,6 +31,10 @@ def correlate(img, window, clip=True):
 
     products = extracted_regions * window.ravel()
     result = products.sum(axis=1).reshape((new_height, new_width))
+
+    if clip:
+        result = np.clip(result , 0, 255)
+
     return result
 
 @paddable
@@ -38,5 +42,5 @@ def normalized_correlate(img, template):
     pixel_sums = np.sqrt(correlate(img.astype("float64") ** 2, np.ones(template.shape), clip=False, pad=False))
     template_mag = np.sqrt((template**2).sum())
 
-    return correlate(img, template, pad=False)/pixel_sums/template_mag
+    return correlate(img, template, pad=False, clip=False)/pixel_sums/template_mag
 

@@ -7,13 +7,14 @@ def show_images(img_label_tuples, grey=True):
     
     axes = [f.add_subplot(100 + 10 * n + i) for i in range(1, n+1)]
     
-    vmax = 1 if all([image.max() <= 1 for image, *_ in img_label_tuples]) else 255
+    imgs_max = 1 if all([image.max() <= 1 for image, *_ in img_label_tuples]) else 255
 
     for ax, (image, label, *others) in zip(axes, img_label_tuples):
         ax.title.set_text(label)
         autoscale = others[0] if len(others) > 0 else False
+        vmin, vmax = (0, imgs_max) if not autoscale else (image.min(), image.max())
         if grey:
-            ax.imshow(image, cmap='gray', vmin=0, vmax=vmax if not autoscale else image.max())
+            ax.imshow(image, cmap='gray', vmin=vmin, vmax=vmax)
         else:
             ax.imshow(image)
             
