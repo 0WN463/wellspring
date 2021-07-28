@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.colors import hsv_to_rgb
 
 def show_images(img_label_tuples, grey=True):
     n = len(img_label_tuples)
@@ -48,3 +49,11 @@ def show_pyramids(pyramid, label_format, grey=True, autoscale=False, format_func
 
 def array_is_equal(arr1, arr2, epsilon=1e-10):
     return np.abs((arr1 - arr2)).max() < epsilon
+
+def make_segments(image):
+    hsv_image = np.zeros((image.shape[0], image.shape[1], 3))
+    hsv_image[:,:,0] = image / (image.max() + 1)
+    hsv_image[:,:,1] = 1
+    hsv_image[:,:,2] = 1
+    return hsv_to_rgb(hsv_image)
+
