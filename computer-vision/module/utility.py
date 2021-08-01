@@ -51,6 +51,8 @@ def array_is_equal(arr1, arr2, epsilon=1e-10):
     return np.abs((arr1 - arr2)).max() < epsilon
 
 def make_segments(image):
+    perm = np.random.permutation(image.max() + 1)
+    image = np.vectorize(lambda x: perm[x])(image)    
     hsv_image = np.zeros((image.shape[0], image.shape[1], 3))
     hsv_image[:,:,0] = image / (image.max() + 1)
     hsv_image[:,:,1] = 1

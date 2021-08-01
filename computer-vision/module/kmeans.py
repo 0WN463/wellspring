@@ -23,10 +23,12 @@ def get_next_centers(curr_centers, features):
     new_centers = new_centers.reshape(curr_centers.shape)
     return new_centers
 
-def kmeans(features, num_clusters, initial_centers=None, epsilon=1e-6):
+def kmeans(features: np.ndarray, num_clusters: int, initial_centers: np.ndarray=None, epsilon: float=1e-6) -> (np.ndarray, np.ndarray):
     if initial_centers is None:
         initial_centers = make_centers(num_clusters, features)
     
+    assert initial_centers.shape[-1] == features.shape[-1], f"Centers dimension ({initial_centers.shape}) does not match feature space ({features.shape})"
+
     centers = initial_centers
     diff = float('infinity')
     while diff > epsilon:
