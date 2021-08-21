@@ -14,7 +14,7 @@ def make_centers(num_clusters, features):
 def get_labels(features, centers):
     num_features = centers.shape[1]
     tree = KDTree(centers)
-    _, labels = tree.query(features.reshape((-1, num_features)))
+    _, labels = tree.query(features.reshape((-1, num_features)), workers=-1)
     return labels.reshape(features.shape[:2])
 
 def get_next_centers(curr_centers, features):
