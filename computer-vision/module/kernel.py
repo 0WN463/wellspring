@@ -32,8 +32,10 @@ def sobel(orientation=Orientation.horizontal):
     
     return np.rot90(horizontal_matrix, orientation.value)
 
-def dog(size, sigma=1, gradient_filter=prewitt, orientation=Orientation.horizontal):
-    return convolve(gaussian_filter(size, sigma), gradient_filter(orientation), pad=False, clip=False)
+def dog(size, sigma=1, gradient_filter_func=prewitt, orientation=Orientation.horizontal):
+    gradient_filter = gradient_filter_func(orientation)
+    size_reduction = gradient_filter.shape[0] - 1
+    return convolve(gaussian_filter(size + size_reduction, sigma), gradient_filter, pad=False, clip=False)
 
 def laplace_filter():
     return np.array([[0, 1, 0], [1, -4, 1], [0, 1, 0]])

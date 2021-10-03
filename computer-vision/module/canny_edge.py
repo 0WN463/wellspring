@@ -2,7 +2,7 @@ import numpy as np
 from .kernel import dog
 from .gradient import compute_gradient
 
-def canny_edge(image, high_threshold, low_threshold, kernel_size=5):    
+def canny_edge(image, high_threshold, low_threshold, kernel_size=3):    
     make_dog = lambda orientation: dog(kernel_size, orientation=orientation)
 
     mag, theta = compute_gradient(image, gradient_kernel=make_dog)
