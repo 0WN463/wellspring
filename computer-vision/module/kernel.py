@@ -42,3 +42,15 @@ def laplace_filter():
 
 def log(size, sigma=1, orientation=Orientation.horizontal):
     return convolve(gaussian_filter(size, sigma), laplace_filter(), pad=False, clip=False)
+
+def gabor(size, sigma=1,omega=1, lamb=1, phi=0):
+    assert size % 2 == 1
+    
+    xs, ys = np.linspace(-5, 5, size), np.linspace(-5, 5, size)
+    xs, ys = np.meshgrid(xs, ys)
+
+    fp = 1/(2 * np.pi * sigma**2)
+    sp = np.exp(- (xs ** 2 + ys**2)/ (2 * sigma**2))
+    lp = np.sin(2 * np.pi * (xs * np.cos(omega) + ys * np.sin(omega))/lamb + phi)
+
+    return fp * sp * lp
