@@ -41,7 +41,8 @@ def laplace_filter():
     return np.array([[0, 1, 0], [1, -4, 1], [0, 1, 0]])
 
 def log(size, sigma=1, orientation=Orientation.horizontal):
-    return convolve(gaussian_filter(size, sigma), laplace_filter(), pad=False, clip=False)
+    size_reduction = laplace_filter().shape[0] - 1
+    return convolve(gaussian_filter(size + size_reduction, sigma), laplace_filter(), pad=False, clip=False)
 
 def gabor(size, sigma=1,omega=1, lamb=1, phi=0):
     assert size % 2 == 1
