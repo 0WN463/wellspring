@@ -2,8 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import hsv_to_rgb
 
-def show_images(img_label_tuples, grey=True):
-    n = len(img_label_tuples)
+def show_images(*img_label_tuples, grey=True):
+    if len(img_label_tuples) == 1 and type(img_label_tuples[0]) == list:
+        img_label_tuples = img_label_tuples[0]
+
+    n = len(list(img_label_tuples))
     f = plt.figure(figsize=(12.8, 9.6))
     
     axes = [f.add_subplot(100 + 10 * n + i) for i in range(1, n+1)]
