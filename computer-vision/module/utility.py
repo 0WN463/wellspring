@@ -62,3 +62,10 @@ def make_segments(image):
     hsv_image[:,:,2] = 1
     return hsv_to_rgb(hsv_image)
 
+def interact_func(func, image):
+    def f(x):
+        im = func(image, x)
+        plt.imshow(im, cmap="gray")
+        plt.show()
+
+    return f
