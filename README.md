@@ -6,7 +6,7 @@ Note that it is displayed much better on [nbviewer](https://nbviewer.jupyter.org
 ## Goal
 To archive the knowledge such that:
 * it is easily accessible and shareable
-* explanations are demonstrated in an interactive fashion, through the use of Jupyter Notebooks.
+* explanations are demonstrated in an interactive fashion, through the use of Jupyter notebooks.
 
 ## Acknowledgement
 All information produced in this repository are adapted from various modules provided by National University of Singapore.
