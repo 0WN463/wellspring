@@ -33,6 +33,14 @@ def binomial():
 def negative_binomial():
     return Distribution("Negative binomial distribution", "NB", pf.negative_binomial)
 
-
 def poisson():
     return Distribution("Poisson distribution", "P", pf.poisson)
+
+def chi_square():
+    return Distribution('Chi square', 'χ²', pf.chi_square)
+
+def t():
+    return Distribution('t-distribution', 't', pf.t)
+
+def F():
+    return Distribution('F-distribution', 'F', pf.F)
