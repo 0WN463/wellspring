@@ -8,5 +8,24 @@ To archive the knowledge such that:
 * it is easily accessible and shareable
 * explanations are demonstrated in an interactive fashion, through the use of Jupyter notebooks.
 
+## Progress
+### Completed
+1. neural-network
+2. fuzzy-system
+3. cyber-security
+4. statistic
+5. graph-theory
+
+### Some minor tweaks required
+1. algorithm analysis
+
+### WIP
+1. ai
+2. computer-networks
+3. computer-vision
+4. discrete-structures
+5. natural-language-processing
+
 ## Acknowledgement
 All information produced in this repository are adapted from various modules provided by National University of Singapore.
+
