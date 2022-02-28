@@ -30,17 +30,18 @@ def merge_sort(A):
     arr2 = merge_sort(A[m:]) # T(ceil(n/2))
     return _merge(arr1, arr2) # Theta(n)
 
+def _random_pivot(arr):
+    return randint(0, len(arr) - 1) 
 
-def quick_sort(arr):
+def quick_sort(arr, pivot_algo=_random_pivot):
     if len(arr) <= 1:
         return arr
     
-    index = randint(0, len(arr) - 1) 
+    index = pivot_algo(arr)
     left, right = _partition(arr, index)
-    left = quick_sort(left)
-    right = quick_sort(right)
+    left = quick_sort(left, pivot_algo)
+    right = quick_sort(right, pivot_algo)
     return left + [arr[index]] + right
-
 
 def _partition(arr, index):
     pivot = arr[index]
