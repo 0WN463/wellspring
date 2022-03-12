@@ -1,8 +1,9 @@
 import numpy as np
 from scipy.spatial import KDTree
 
+
 def simple_area(image, window_size=11):
-    result = np.copy(image)
+    mask = np.full(image.shape, True)
 
     LEFT = window_size // 2
     RIGHT = window_size - LEFT
@@ -10,19 +11,25 @@ def simple_area(image, window_size=11):
     indices = np.unravel_index(sorted_response_inds, image.shape)
 
     for ind in zip(indices[0], indices[1]):
-        if result[ind] <= 0:
-            result[ind] = 0
+        if not mask[ind]:
             continue
+        left = max(ind[0] - LEFT, 0)
+        top = max(ind[1] - LEFT, 0)
 
-        result[ind[0] - LEFT: ind[0] + RIGHT,
-               ind[1] - LEFT: ind[1] + RIGHT] = 0
-        result[ind] = image[ind]
+        mask[left: ind[0] + RIGHT,
+             top: ind[1] + RIGHT] = False
+        mask[ind] = True
 
-    return result
+    return np.argwhere(mask)
+
+
+def top_k(image, points, k):
+    intensities = image[points[:, 0], points[:, 1]]
+    return points[np.flip(np.argsort(intensities, axis=0))][:k]
+
 
 def adaptive_area(image, r):
-    local_maxima = simple_area(image)
-    ps = np.argwhere(local_maxima > 0)
+    ps = simple_area(image)
 
     tree = KDTree(ps)
 
@@ -39,30 +46,10 @@ def adaptive_area(image, r):
             continue
 
         indices = ps[n]
-        largest_n = local_maxima[ps[n][:, 0], ps[n][:, 1]].max()
+        largest_n = image[ps[n][:, 0], ps[n][:, 1]].max()
 
-        self = local_maxima[p[0], p[1]]
-        if self > largest_n * 1:
+        self = image[p[0], p[1]]
+        if self > largest_n:
             result.append(p)
 
-    new = np.zeros(image.shape)
-
-    for y, x in result:
-        new[y, x] = 255
-
-    return new
-
-def top_k(image, k):
-    indices = np.argsort(image, axis=None)
-    indices = np.unravel_index(indices, image.shape)
-    indices = zip(reversed(indices[0]), reversed(indices[1]))
-
-    result = np.zeros(image.shape)
-
-    for i, ind in enumerate(indices):
-        if i == k:
-            break
-
-        result[ind] = 255
-
-    return result
+    return np.array(result)

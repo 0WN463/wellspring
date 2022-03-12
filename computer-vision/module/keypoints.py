@@ -3,6 +3,7 @@ from .kernel import Orientation
 from .convolve import convolve
 import numpy as np
 
+
 def harris(image, window_size=5, kappa=0.05, window=None):
     Ix = compute_one_gradient(image, Orientation.horizontal)
     Iy = compute_one_gradient(image, Orientation.vertical)
@@ -19,4 +20,3 @@ def harris(image, window_size=5, kappa=0.05, window=None):
     R = det - 0.05 * tr ** 2
 
     return R
-

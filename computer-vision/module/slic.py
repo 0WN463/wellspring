@@ -42,7 +42,8 @@ def _get_labels(features: np.ndarray, centers: np.ndarray,
     queried_dist, queried_labels = tree.query(
         features.reshape((-1, num_features)), k=centers.shape[0])
 
-    filtered_dist, filtered_labels = _filter_outside(features, s, queried_dist, queried_labels, centers)
+    filtered_dist, filtered_labels = _filter_outside(
+        features, s, queried_dist, queried_labels, centers)
 
     prev_distances = prev_distances.reshape(filtered_dist.shape)
     prev_labels = prev_labels.reshape(filtered_labels.shape)
@@ -53,22 +54,24 @@ def _get_labels(features: np.ndarray, centers: np.ndarray,
 
     return labels.reshape(features.shape[:2]), distances
 
+
 def _filter_outside(features: np.ndarray, s: int,
                     distances: np.ndarray,
                     labels: np.ndarray,
                     centers: np.ndarray) -> (np.ndarray, np.ndarray):
-    yx = features[:,:,:2]
-    yxs = np.repeat(yx[:, : , np.newaxis], labels.shape[-1], axis=2)
-    
-    center_yx = centers[:,:2][labels]
+    yx = features[:, :, :2]
+    yxs = np.repeat(yx[:, :, np.newaxis], labels.shape[-1], axis=2)
+
+    center_yx = centers[:, :2][labels]
     yxs = yxs.reshape(center_yx.shape)
-    
+
     is_inside = np.all(np.abs(yxs - center_yx) <= s, axis=2)
-    
-    assert np.all(np.any(is_inside, axis=1)), f"No candidate found among top-{labels.shape[-1]} candidates"
-    
+
+    assert np.all(np.any(is_inside, axis=1)
+                  ), f"No candidate found among top-{labels.shape[-1]} candidates"
+
     indices = np.apply_along_axis(np.argmax, 1, is_inside)
-    return distances[range(len(indices)),indices], labels[range(len(indices)),indices]
+    return distances[range(len(indices)), indices], labels[range(len(indices)), indices]
 
 
 def _get_next_centers(curr_centers: np.ndarray, features: np.ndarray, labels: np.ndarray):
@@ -90,11 +93,10 @@ def slic(image: np.ndarray, num_super_pixels: int, factor: float = 1.0, epsilon:
     centers = feature_centers
     diff = float('infinity')
     while diff > epsilon:
-        labels, distances = _get_labels(features, centers, distances, labels, s)
+        labels, distances = _get_labels(
+            features, centers, distances, labels, s)
         new_centers = _get_next_centers(centers, features, labels)
         diff = ((centers - new_centers)**2).sum()
         centers = new_centers
 
     return _get_labels(features, centers, distances, labels, s)[0], centers
-
-
