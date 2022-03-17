@@ -89,5 +89,5 @@ def _find_basis(tableau):
             mask |= col
             indices.append(c)
 
-    return indices
+    return np.array(indices)
 
