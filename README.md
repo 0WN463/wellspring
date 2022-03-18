@@ -18,13 +18,13 @@ To archive the knowledge such that:
 
 ### Some minor tweaks required
 1. algorithm analysis
+2. ai
 
 ### WIP
-1. ai
-2. computer-networks
-3. computer-vision
-4. discrete-structures
-5. natural-language-processing
+1. computer-networks
+2. computer-vision
+3. discrete-structures
+4. natural-language-processing
 
 ## Acknowledgement
 All information produced in this repository are adapted from various modules provided by National University of Singapore.
