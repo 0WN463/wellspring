@@ -10,22 +10,29 @@ To archive the knowledge such that:
 
 ## Progress
 ### Completed
-1. neural-network
-2. fuzzy-system
-3. cyber-security
+1. neural_network
+2. fuzzy_system
+3. cyber_security
 4. statistic
-5. graph-theory
+5. graph_theory
 
 ### Some minor tweaks required
 1. algorithm analysis
 2. ai
 
 ### WIP
-1. computer-networks
-2. computer-vision
-3. discrete-structures
-4. natural-language-processing
+1. computer_networks
+2. computer_vision
+3. discrete_structures
+4. natural_language_processing
+5. linear_optimization
+
+
+## Contribution
+
+Feel free to create issues for any typos, improvements, or even if you have any doubts about the subject matter (though the frequency of addressing issues may vary).
 
 ## Acknowledgement
+
 All information produced in this repository are adapted from various modules provided by National University of Singapore.
 
