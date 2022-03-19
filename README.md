@@ -27,10 +27,15 @@ To archive the knowledge such that:
 4. natural_language_processing
 5. linear_optimization
 
+## Future modules
+1. Linear algebra
+2. Signal processing
+3. Multivariable differential equations
+4. Basic circuitry
 
 ## Contribution
 
-Feel free to create issues for any typos, improvements, or even if you have any doubts about the subject matter (though the frequency of addressing issues may vary).
+Feel free to create issues (or even PR's) for any typos, improvements, or even if you have any doubts about the subject matter (though the frequency of addressing issues may vary).
 
 ## Acknowledgement
 
