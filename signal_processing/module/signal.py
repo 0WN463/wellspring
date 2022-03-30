@@ -35,7 +35,7 @@ def sinusoid(ts, mu=1, phi=0, omega=None, f=None):
     if omega is None:
         omega = _f_to_omega(f)
 
-    return mu / 2 * np.exp(1j * (omega * ts + phi))
+    return mu * np.exp(1j * (omega * ts + phi))
 
 
 def cos(ts, mu=1, phi=0, omega=None, f=None):
