@@ -16,10 +16,10 @@ def _clip_zeroes(arr):
 
 
 def series(func, Tp, c_range):
-    ck_rs = [quad(lambda t:  (func(t) * np.exp(-2j * np.pi * m * t/Tp)
-                              ).real, 0, Tp)[0] / Tp for m in c_range]
-    ck_is = [quad(lambda t:  (func(t) * np.exp(-2j * np.pi * m * t/Tp)
-                              ).imag, 0, Tp)[0] / Tp for m in c_range]
+    ck_rs = [quad(lambda t: (func(t) * np.exp(-2j * np.pi * m * t/Tp)
+                             ).real, -Tp/2, Tp/2)[0] / Tp for m in c_range]
+    ck_is = [quad(lambda t: (func(t) * np.exp(-2j * np.pi * m * t/Tp)
+                             ).imag, -Tp/2, Tp/2)[0] / Tp for m in c_range]
     return _clip_zeroes(np.array(ck_rs) + np.array(ck_is) * 1j)
 
 
@@ -28,3 +28,11 @@ def reconstruct(span, c_func, ts, Tp):
     harmonics = np.array(
         [sinusoid(ts, mu=np.abs(c_func(k)), f=k/Tp, phi=np.angle(c_func(k))) for k in ks])
     return _clip_zeroes(harmonics.sum(axis=0))
+
+
+def transform(func, fs, Tp=np.inf, **kwargs):
+    ck_rs = [quad(lambda t: (func(t) * np.exp(-2j * np.pi * f * t)
+                             ).real, -Tp/2, Tp/2, **kwargs)[0] for f in fs]
+    ck_is = [quad(lambda t: (func(t) * np.exp(-2j * np.pi * f * t)
+                             ).imag, -Tp/2, Tp/2, **kwargs)[0] for f in fs]
+    return _clip_zeroes(np.array(ck_rs) + np.array(ck_is) * 1j)

@@ -23,7 +23,7 @@ def sinc(ts, T):
 
 
 def exp(ts, sigma):
-    return np.exp(sigma * ts)
+    return np.exp(-sigma * ts)
 
 
 def _f_to_omega(f):
