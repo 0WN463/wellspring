@@ -2,7 +2,7 @@ import inspect
 import matplotlib.pyplot as plt
 
 def show_implementation(cls, section=None):
-    SECTION_DELIMITER = "Section "
+    SECTION_DELIMITER = "Section"
     found_section = False
     it = inspect.getsourcelines(cls)[0]
     print(it[0], end='')
