@@ -1,5 +1,27 @@
 import numpy as np
+from .elimination import gauss_jordan_elim
 
+
+def mult(A: np.ndarray, B: np.ndarray) -> np.ndarray:
+    assert A.shape[1] == B.shape[0]
+
+    result = np.zeros((A.shape[0], B.shape[1]))
+
+    for i in range(A.shape[0]):
+        for j in range(B.shape[1]):
+            result[i][j] = np.sum(A[i] * B[:, j])
+
+    return result
+
+def inv(A: np.ndarray) -> np.ndarray | None:
+    assert A.ndim == 2
+    assert A.shape[0] == A.shape[1]
+
+    I = np.identity(A.shape[0])
+
+    R, B = gauss_jordan_elim(A, I)
+
+    return B if np.all(R == I) else None
 
 def det(A: np.ndarray) -> float:
     if A.ndim == 1:

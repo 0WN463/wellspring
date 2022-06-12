@@ -29,8 +29,10 @@ def gaussian_elim(arr: np.ndarray, b: np.ndarray = None) -> np.ndarray:
 
 
 def gauss_jordan_elim(arr: np.ndarray, b: np.ndarray = None) -> np.ndarray:
-    arr, _b = gaussian_elim(arr, b)
-    for i in range(1, arr.shape[0]):
+    _b = np.zeros((arr.shape[0], 1)) if b is None else b
+    arr, _b = gaussian_elim(arr, _b)
+    
+    for i in range(arr.shape[0]):
         cols = np.argwhere(arr[i] != 0).ravel()
         if not cols.size:
             break
