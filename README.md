@@ -17,6 +17,7 @@ To archive the knowledge such that:
 5. graph_theory
 6. signal_processing
 7. real_time_systems
+8. linear_algebra
 
 ### Some minor tweaks required
 1. algorithm analysis
@@ -30,7 +31,6 @@ To archive the knowledge such that:
 5. linear_optimization
 
 ## Future modules
-1. Linear algebra
 2. Multivariable differential equations
 3. Basic circuitry
 
