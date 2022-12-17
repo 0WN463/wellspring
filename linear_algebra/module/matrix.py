@@ -1,7 +1,6 @@
 import numpy as np
 from .elimination import gauss_jordan_elim
 
-
 def mult(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     assert A.shape[1] == B.shape[0]
 
@@ -12,6 +11,14 @@ def mult(A: np.ndarray, B: np.ndarray) -> np.ndarray:
             result[i][j] = np.sum(A[i] * B[:, j])
 
     return result
+
+def mults(*As):
+    arr = As[0]
+    
+    for A in As[1:]:
+        arr = mult(arr, A)
+
+    return arr
 
 def inv(A: np.ndarray) -> np.ndarray | None:
     assert A.ndim == 2
