@@ -1,15 +1,16 @@
 import numpy as np
-from fractions import Fraction
 from typing import Optional
 import numpy.typing as npt
+from fractions import Fraction
 
-arr_type = npt.NDArray[np.int_]
-frac_arr_type = npt.NDArray[np.object_]
+arr_type = npt.NDArray
 
-def gaussian_elim(arr: arr_type, b: Optional[arr_type] = None) -> frac_arr_type|tuple[frac_arr_type, frac_arr_type]:
-    _b:arr_type = np.zeros((arr.shape[0], 1)).astype('int') if b is None else b
-    arr = arr + Fraction()
-    _b = _b + Fraction()
+def gaussian_elim(arr: arr_type, b: Optional[arr_type] = None) -> arr_type|tuple[arr_type, arr_type]:
+    _b:arr_type = np.zeros((arr.shape[0], 1)).astype(arr.dtype) if b is None else b.copy()
+    arr = arr.copy()
+
+    if arr.dtype == np.dtype('O'):
+        _b = _b + Fraction()
 
     if 0 in arr.shape:
         return (arr, _b) if b is not None else arr
@@ -41,8 +42,13 @@ def gaussian_elim(arr: arr_type, b: Optional[arr_type] = None) -> frac_arr_type|
 
     return (arr, _b) if b is not None else arr
 
-def gauss_jordan_elim(arr: arr_type, b: Optional[arr_type] = None) -> frac_arr_type|tuple[frac_arr_type, frac_arr_type]:
-    _b = np.zeros((arr.shape[0], 1)).astype('int') if b is None else b
+def gauss_jordan_elim(arr: arr_type, b: Optional[arr_type] = None) -> arr_type|tuple[arr_type, arr_type]:
+    arr = arr.copy()
+    _b = np.zeros((arr.shape[0], 1)).astype('int') + Fraction() if b is None else b.copy()
+
+    if arr.dtype == np.dtype('O'):
+        _b = _b + Fraction()
+
     arr, _b = gaussian_elim(arr, _b)
     
     for i in range(arr.shape[0]):

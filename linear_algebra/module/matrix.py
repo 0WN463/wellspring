@@ -4,7 +4,7 @@ from .elimination import gauss_jordan_elim
 def mult(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     assert A.shape[1] == B.shape[0]
 
-    result = np.zeros((A.shape[0], B.shape[1])).astype('object')
+    result = np.zeros((A.shape[0], B.shape[1])).astype(A.dtype)
 
     for i in range(A.shape[0]):
         for j in range(B.shape[1]):
@@ -24,7 +24,7 @@ def inv(A: np.ndarray) -> np.ndarray | None:
     assert A.ndim == 2
     assert A.shape[0] == A.shape[1]
 
-    I = np.identity(A.shape[0]).astype('int')
+    I = np.identity(A.shape[0]).astype(A.dtype)
 
     R, B = gauss_jordan_elim(A, I)
 
