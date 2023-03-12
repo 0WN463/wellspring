@@ -18,6 +18,7 @@ To archive the knowledge such that:
 6. signal_processing
 7. real_time_systems
 8. linear_algebra
+9. multivariable_calculus
 
 ### Some minor tweaks required
 1. algorithm analysis
