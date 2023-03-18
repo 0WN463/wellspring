@@ -31,6 +31,7 @@ $$
 \newcommand\det[1]{\left| #1\right|} 
 \newcommand\norm[1]{\lVert #1\rVert} 
 \newcommand\set[1]{\left\{#1\right\}} 
+\newcommand\dels[2]{\frac{\partial #1}{\partial #2}} 
 $$
 
 ```python
@@ -291,6 +292,9 @@ $$
 \text{div } \v F = \dels{P}{x} + \dels{Q}{y} + \dels{R}{z}
 $$
 
+Since $\nabla \v F = \mat{\dels{P}{x} \\ \dels{P}{y} \\ \dels{R}{z}}$, we can treat $\nabla = \mat{\dels{ }{x} \\ \dels{ }{y} \\ \dels{ }{z}}$,
+and thus $\text{div } \v F = \nabla \cdot \v F$.
+
 The divergence corresponds to the **net flow** into/out of the region.
 
 ```python
@@ -355,6 +359,8 @@ $$
 $$
 
 Note that the **curl** is a vector field.
+
+We also see that $\text{curl } \v F= \nabla \times \v F$.
 
 The curl measures the amount of **rotation** at a point.
 More precisely, $\text{curl } \v F \cdot \v n$ measures the rotating effect about the axis of $\v n$.
