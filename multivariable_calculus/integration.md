@@ -607,7 +607,7 @@ We let $S$ be a function of $uv$ and $R$ a function of $xy$.
 
 To analyze how the area changes, we consider a small rectangle from $S$ with area $\Delta u \Delta v$, and see how it changes under $T$.
 
-Let the 4 corners of the rectange be $A,B,C$ and $D$, with the bottom left corner ($A$) be on $(u_0, v_0)$; we get the following identity:
+Let the 4 corners of the rectangle be $A,B,C$ and $D$, with the bottom left corner ($A$) be on $(u_0, v_0)$; we get the following identity:
 $$
 \begin{align*}
 A &= (u_0, v_0)\\
@@ -617,7 +617,7 @@ D &= (u_0, v_0 + \Delta v)
 \end{align*}
 $$
 
-We denote $A' = T(A)$ and similary for $B,C,D$.
+We denote $A' = T(A)$ and similarly for $B,C,D$.
 
 Let $\v a$ and $\v b$ be the vectors $A' D' $ and $A' B'$.
 
@@ -716,7 +716,7 @@ $$
 \end{align*}
 $$
 
-colloborates the existence of $r$ term in [polar coordinates](#Integral-in-polar-coordinates)
+which corroborates the existence of $r$ term in [polar coordinates](#Integral-in-polar-coordinates)
 
 
 ## 3D Jacobian
@@ -782,7 +782,7 @@ A **line integral** is the integral of a function along a curve $C$ on the $xy$-
 
 We can contextualize trying to find the area of a slice of a surface.
 
-We derive this by parametizing $C$ as a function of $x$ and $y$.
+We derive this by parametrizing $C$ as a function of $x$ and $y$.
 $$
 R(t) = (x(t), y(t)) \quad a \leq t \leq b
 $$
@@ -820,7 +820,7 @@ $$
 &= \int _0 ^2 \sqrt{1 - x^2 - y^2} \sqrt{x'^2 + y'^2} dt \\
 &= \int _0 ^2 \sqrt{1 - (-1 + t)^2} \sqrt{1^2 + 0^2} dt \\
 &= \int _0 ^2 \sqrt{2t - t^2} dt \\
-&= \frac{1}{2} \left[ \arcsin (t-1) + (t-1) \sqrt{2t - t^2} \right]_0 ^2 \quad \text{by subtitution} \\
+&= \frac{1}{2} \left[ \arcsin (t-1) + (t-1) \sqrt{2t - t^2} \right]_0 ^2 \quad \text{by substitution} \\
 &= \frac{1}{2} (\frac{\pi}{2} + \frac{\pi}{2}) \\
 &= \frac{\pi}{2} \\
 \end{align*}
@@ -838,7 +838,7 @@ We can contextualize by saying that we are given the amount of stress each point
 and we wish to find the total stress exerted unto some surface.
 
 
-We paremeterize our surface as:
+We parametrize our surface as:
 $$
 R(u, v) = (x(u, v), y(u, v), z(u, v))
 $$
@@ -855,7 +855,7 @@ $$
 
 
 We now need to assume that the surface is **smooth**.
-Formaly, we require $R_u$ and $R_v$ be continuous and $R_u \times R_v \neq 0$ for all $u,v$ in the domain.
+Formally, we require $R_u$ and $R_v$ be continuous and $R_u \times R_v \neq 0$ for all $u,v$ in the domain.
 
 For any $u,v$, notice that $R_u$ and $R_v$ are tangent to the surface at the corresponding point.
 Hence, they create a plane that is on the surface.
@@ -867,7 +867,7 @@ $$
 \Delta S_{ij} \approx \norm{R_u \times R_v} \Delta u \Delta v
 $$
 
-and at the limts, we have
+and at the limits, we have
 $$
 dS = \norm{R_u \times R_v} du dv = \norm{R_u \times R_v} dA
 $$
@@ -880,7 +880,7 @@ $$
 
 $\example$
 
-Let us integrate the unit sphere surface over a constaint field of $1$.
+Let us integrate the unit sphere surface over a constant field of $1$.
 
 $$
 \begin{align*}
@@ -908,7 +908,7 @@ Which agrees with our known formula that the surface area of a hemi-sphere is $2
 
 ## Explicit surfaces
 
-Suppose that our surface was parameterized in its explicit form instead:
+Suppose that our surface was parametrized in its explicit form instead:
 $$
 R(x, y) = (x, y, g(x, y))
 $$
