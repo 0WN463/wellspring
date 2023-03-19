@@ -74,7 +74,7 @@ Imagine it as a car driving along some road, and we know the wind direction and 
 while we wish to find the overall wind force that is acting on the car while we drive along the road.
 
 
-Once again, we subdivide $C$ into subarcs of $P_{i-1} P_i$ with length $\Delta s_i$.
+Once again, we subdivide $C$ into sub-arcs of $P_{i-1} P_i$ with length $\Delta s_i$.
 
 At each point $P_i^*$, if $\v{T}(t_i^*)$ is the unit tangent vector to $C$ at that point,
 then when $\Delta s_i$ is small, we get:
@@ -112,11 +112,11 @@ $$
 $$
 
 
-Notice that since we are taking the unit vector at $P_i$, the actualy magnitude of the tangent vector does not matter.
-This means that the work done does not change base on our parameterization of $C$, if the orientation is the same.
+Notice that since we are taking the unit vector at $P_i$, the actual magnitude of the tangent vector does not matter.
+This means that the work done does not change base on our parametrization of $C$, if the orientation is the same.
 This agrees with our physics intuition, since work is a function of displacement, not velocity.
 
-If $C$ is paremeterized in the opposite direction, the resultant work will be $-W$.
+If $C$ is parametrized in the opposite direction, the resultant work will be $-W$.
 
 
 ## Fundamental theorem for line integral
@@ -188,7 +188,7 @@ $$
 \int _C \v{F} \cdot dR = \int_C Xdx + Y dy = \int \int _D \left( \frac{\partial Y}{\partial x} - \frac{\partial X}{\partial y} \right) dA
 $$
 
-Positively orientation is the counterclockwise traversal of $C$.
+Positively orientation is the counter-clockwise traversal of $C$.
 
 This gives us a rather unique result, because instead of integrating along $C$ to find $W$,
 we can instead integrate across the area $D$.
@@ -248,17 +248,17 @@ Notice that we only perform a single integration instead of the usual 2.
 
 To define the surface integral, we need the surface to be **orientable/two-sided**.
 
-This means that we need to be able to define a unit normal vector $\v n$ for each non-boundary point on the sufrace,
-such that the coodinate functions of $v n$ are continuous functions.
+This means that we need to be able to define a unit normal vector $\v n$ for each non-boundary point on the surface,
+such that the coordinate functions of $v n$ are continuous functions.
 
 If a surface is orientable, it would have 2 orientations, $\v n$ and $-\v n$.
 
-An example of a non-orientable surface would be a Mobius strip
+An example of a non-orientable surface would be a Möbius strip
 
 We will assume that all surfaces we discuss henceforth are orientable.
 
 
-Given a parameterization of $R(u, v)$ for the surface, the orientation is simply:
+Given a parametrization of $R(u, v)$ for the surface, the orientation is simply:
 $$
 \v n = \frac{R_u \times R_v}{\norm {R_u \times R_v}}
 $$
@@ -367,7 +367,7 @@ More precisely, $\text{curl } \v F \cdot \v n$ measures the rotating effect abou
 
 ### Stoke's theorem
 
-Given $S$ that is oriented, piecewise-smooth sufrace bounded by a simple, closed, piecewise-smooth boundary curve $C$ with **positive orientation**.
+Given $S$ that is oriented, piecewise-smooth surface bounded by a simple, closed, piecewise-smooth boundary curve $C$ with **positive orientation**.
 Suppose that $\v F$'s partial derivatives exists in the open region that contains $S$, then
 
 $$
