@@ -13,13 +13,6 @@ jupyter:
     name: python3
 ---
 
-```python
-import sys
-sys.path.append("..")
-
-from common.utility import show_implementation
-```
-
 # Dynamic Programming
 Dynamic programming is a way to solve a problem by solving the smaller subproblems, where to solution to the overall problem depends on the solution of the smaller subproblems.
 
