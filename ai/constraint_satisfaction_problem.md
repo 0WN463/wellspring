@@ -12,11 +12,6 @@ jupyter:
     name: python3
 ---
 
-``` python
-import sys
-sys.path.append("..")
-```
-
 # Constraint Satisfaction Problems
 A CSP is defined as a problem where the AI is tasked to find a set of values for each of the variable such that it satisfy all the constraints given.
 

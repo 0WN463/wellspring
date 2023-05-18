@@ -8,6 +8,18 @@ To archive the knowledge such that:
 * it is easily accessible and shareable
 * explanations are demonstrated in an interactive fashion, through the use of Jupyter notebooks.
 
+To run the notebooks interactively, navigate to `wellspring` directory and use either
+
+``` bash
+env PYTHONPATH=$(pwd) jupyter notebook
+```
+
+or 
+
+``` bash
+env PYTHONPATH=$(pwd) jupyter lab
+```
+
 ## Progress
 ### Completed
 1. neural_network

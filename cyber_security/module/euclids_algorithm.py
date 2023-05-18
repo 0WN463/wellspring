@@ -1,1 +1,1 @@
-../../discrete-structures/module/euclids_algorithm.py
+../../discrete_structures/module/euclids_algorithm.py
