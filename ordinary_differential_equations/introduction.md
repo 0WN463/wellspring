@@ -48,7 +48,10 @@ A **differential equation** (DE) is an equation that contains some derivatives o
 There are some characteristics of DE.
 
 
-## Ordinary
+## Properties of DE
+
+
+### Ordinary
 
 An **ordinary** DE equation has only 1 independent variable.
 All terms in the DE are functions of this variable.
@@ -58,12 +61,12 @@ This contrasts with **partial** DE which can have multiple independent variables
 _This module will only focus on ordinary DE's._
 
 
-## Order
+### Order
 
 The order refers to the highest order derivative of the DE.
 
 
-## Linear
+### Linear
 
 
 A DE is linear if it has the form of:
@@ -82,7 +85,7 @@ $$
 A general solution of a $n$-th order DE will have $n$ arbitrary constants.
 
 
-## Separable
+### Separable
 
 A **first order** DE is separable if it can be written as:
 
@@ -102,7 +105,7 @@ $$
 $$
 
 
-### Reduction to separable form
+#### Reduction to separable form
 
 Certain first order DE are not separable, but can be made so by a change of variable.
 
@@ -133,7 +136,7 @@ $$
 Thus, we can solve for $u$ and obtain $y$.
 
 
-### Linear change of variable
+#### Linear change of variable
 
 A DE of the form $y' = f(ax + by +c)$ can be solved by setting $u = ax + by + c$.
 
@@ -234,7 +237,7 @@ $$
 
 From our previous example, we solve it as:
 $$
-z &= \frac{x^3}{5} - \frac{C}{x^2}
+z = \frac{x^3}{5} - \frac{C}{x^2}
 $$
 
 Hence,
@@ -376,6 +379,8 @@ and  $y_p(x)$ is _any_ solution to the non-homogeneous DE.
 
 
 There are 2 ways to find $y_p(x)$:
+1. Solving algebraically
+2. Variation of parameters
 
 #### Solving algebraically
 
@@ -424,8 +429,47 @@ Then the substitution will reduce it into a [polynomial case](#Polynomial).
 
 ##### Trigonometric
 
+Suppose that our equation is of the form of, $y'' + ay' + by = F(x)$ where $F(x) = s(x) \sin (Ax)$ or $s(x) \cos (Ax)$.
 
-We use $y = 
+We will, instead, solve for using $F(x) = s(x) e^{Aix}$.
+
+Since $e^{Aix} = \cos Ax + i \sin Ax$, we can solve this equation first,
+then equate the real and imaginary part to get the solution to our original equation.
+
+$\example$
+
+To solve $y'' + 4y' = 16x \sin 2x$, we solve this instead: $y'' - 4y' = 16x e^{i 2x}$.
+
+\begin{align*}
+&z = ue^{i2x} \\
+&z' = u'e^{i2x} + 2i u e^{i2x} \\
+&z'' = u''e^{i2x} + 2i u' e^{2ix} + 2i u' e^{i2x} - 4 u e^{i2x} \\
+&u''e^{i2x} + 2i u' e^{2ix} + 2i u' e^{i2x}   = 16xe^{i2x}\\
+&u'' + 4i u' = 16x \\
+\end{align*}
+
+Now we solve this resultant equation by treating it as the polynomial case:
+\begin{align*}
+&u = Ax^2 + Bx + C\\
+&u' = 2Ax + B\\
+&u'' = 2A\\
+&2A + 8Ai x + 4i B = 16 x\\
+&2A + 4i B = 0\\
+&8Ai = 16\\
+&A = -2i\\
+&B = 1\\
+&u = -2ix^2 + x
+\end{align*}
+
+Substituting back to $z$, we get:
+$$
+z = (-2ix^2 + x) e^{2ix}
+$$
+
+Since we want the $\sin$, we find the imaginary component and get:
+$$
+y = Im (z) = x \sin 2x - 2x^2 \cos x
+$$
 
 
 #### Variation of parameters
@@ -434,11 +478,119 @@ $\theorem$:
 Given the homogeneous solutions, $y_1, y_2$,
 a particular solution is
 $$
-y_p(x) = u' y_1' + v' y_2 '
+y_p(x) = u y_1 + v y_2
 $$
 
 where:
 $$
-u = - \int \frac{y_2 F(x)}{y_1 y_2 ' - y_1 ' y_2} \quad
-v = \int \frac{y_1 F(x)}{y_1 y_2 ' - y_1 ' y_2}
+u = - \int \frac{y_2 F(x)}{y_1 y_2 ' - y_1 ' y_2} dx \quad
+v = \int \frac{y_1 F(x)}{y_1 y_2 ' - y_1 ' y_2} dx
 $$
+
+<details>
+<summary style=\color: blue\>$\proof$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
+<p>
+We consider the solution of
+$$
+y'' + p(x) y' + q(x) y = F(x)
+$$
+where $p(x), q(x)$ are continuous on some interval.
+</p>
+<p>
+We know that our homogeneous solution is of the form:
+
+$$
+y_h = c_1 y_1 + c_2 y_2
+$$
+
+We equate our homogeneous solution and particular solution together, and let the particular solution to be of form:
+
+$$
+y_p = u(x) y_1 + v(x) y_2
+$$ 
+
+where $u,v$ are continuous functions defined on the interval.
+(This is possible since $p,q$ are continuous).
+Thus we are re-using the $y_1,y_2$ from the homogeneous solution.
+</p>
+<p>
+Differentiating, we get $y'_p = uy_1' + vy_2' + u'y_1 + v'y_2$
+</p>
+<p>
+We restrict $u'y_1 + v'y_2 = 0$ for convenience.
+Then, we get $y'_p = uy_1' + vy_2', \quad y''_p = u'y_1' + uy''_1 + v'y_2' + vy_2''$
+</p>
+<p>
+Substituting back into our original equation, we get:
+$$
+(u'y_1' + uy''_1 + v'y_2' + vy_2'') + p(uy_1' + vy_2') + q(u y_1 + v y_2) \\
+= u(y_1'' + py_1' + qy_1) + v(y_2'' + py_2' + qy_2) + (u'y_1' + v'y_2') = F(x)
+$$
+</p>
+<p>
+Since $y_1, y_2$ are solutions to the homogeneous solution,
+we know that $y_1'' + py_1' + qy_1$ and $y_2'' + py_2' + qy_2$ are both $0$.
+Thus, it simplifies to $u' y_1' + v'y_2' = F(x)$.
+</p>
+</p>
+Together with our restriction that $u'y_1 + v'y_2 = 0$ and the fact that $y_1,y_2$ are independent, we can solve that:
+$$
+u' = - \frac{y_2 F(x)}{y_1 y_2 ' - y_1 ' y_2} \quad
+v' = \frac{y_1 F(x)}{y_1 y_2 ' - y_1 ' y_2} 
+$$
+</p>
+</p>
+And thus
+$$
+u = - \int \frac{y_2 F(x)}{y_1 y_2 ' - y_1 ' y_2} dx \quad
+v = \int \frac{y_1 F(x)}{y_1 y_2 ' - y_1 ' y_2} dx
+$$
+<p>
+$QED$
+</div>
+</details>
+
+
+$\example$
+
+We now solve this equation again:
+
+$$y'' - 4y' + y = x^2 +1$$
+
+We know that:
+
+$$\lambda_1 = 2 + \sqrt{3} \quad \lambda_2 = 2 - \sqrt{3}$$
+
+$$
+y = c_1 e^{\lambda _1x} + c_2 e^{\lambda_2 x}
+$$
+
+$$
+\begin{align*}
+u &= - \int \frac{y_2 F(x)}{y_1 y_2 ' - y_1 ' y_2}  dx\\
+&= - \int \frac{e^{\lambda_2 x} (x^2 + 1)}{(\lambda_1 - \lambda 2) e^{(\lambda_1 + \lambda _2)x}} dx\\
+&= - \int \frac{(x^2 + 1)}{(\lambda_1 - \lambda 2) e^{\lambda_1 x}} dx\\
+&= - \frac{1}{(\lambda_1 - \lambda_2)} \frac{(\lambda_1^2(x^2 + 1) + 2\lambda_1x +2)}{\lambda_1^3}\\
+v &= \frac{1}{(\lambda_1 - \lambda_2)} \frac{(\lambda_2^2(x^2 + 1) + 2\lambda_2x +2)}{\lambda_2^3}
+\end{align*}
+$$
+
+After simplifying, we indeed get the same answer as with solving using variation of parameters (though the simplification may be tedious).
+
+
+```python
+from sympy import Symbol, simplify, sqrt, exp
+
+l_1 = 2 + sqrt(3)
+l_2 = 2 - sqrt(3)
+
+x = Symbol('x')
+y1 = exp(l_1 * x)
+y2 = exp(l_2 * x)
+f = x**2 + 1
+
+u = - 1/(l_1 - l_2) * (l_1 **2 * f + 2 * l_1 * x + 2) / l_1 **3 / exp(l_1 * x)
+v = 1/(l_1 - l_2) * (l_2**2 * f + 2 * l_2 * x + 2) / l_2 **3 / exp(l_2 * x)
+print(simplify(u * y1 + v * y2))
+```
