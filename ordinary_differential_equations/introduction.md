@@ -56,9 +56,7 @@ There are some characteristics of DE.
 An **ordinary** DE equation has only 1 independent variable.
 All terms in the DE are functions of this variable.
 
-This contrasts with **partial** DE which can have multiple independent variables.
-
-_This module will only focus on ordinary DE's._
+This contrasts with [**partial** DE](./partial_ordinary_equations.ipynb) which can have multiple independent variables.
 
 
 ### Order
@@ -72,7 +70,7 @@ The order refers to the highest order derivative of the DE.
 A DE is linear if it has the form of:
 
 $$
-F = a_n y^n (x) a_{n-1} y^{n-1} (x) + \cdots + a_1 y^1 (x) + a_0 y(x)
+F = a_n y^n (x) + a_{n-1} y^{n-1} (x) + \cdots + a_1 y^1 (x) + a_0 y(x)
 $$
 
 where $F, a_n$ and $y(x)$ are functions of $x$; $y^{n}(x)$ is the $n$-th derivative of $y$ with respect to $x$.
