@@ -45,25 +45,135 @@ import matplotlib.pyplot as plt
 
 ## Pendulum
 
+![pendulum](https://upload.wikimedia.org/wikipedia/commons/6/66/Pendulum_gravity.svg)
+
 A pendulum is defined by the following equation:
 $$
 L \theta '' = -g \sin \theta
 $$
 
 with:
-* $L$: length of the pendulum
+* $L$: length of the pendulum ($l$ in the image)
 * $\theta$: angle between the vertical axis and the pendulum
 * $g$: gravitational force
 
-For small $\theta$, the general solution has the form:
+### Equilibrium
+
+Notice that when $\theta = 0$, then $\theta'' = 0$.
+Thus $\theta = 0 $ is an **equilibrium**, _ie_ a value where $\theta$ remains constant.
+This makes intuitively sense because a pendulum that is at the resting state shouldn't move.
+
+
+Less intuitively, we would also see that $\theta = \pi$ is also an equilibrium.
+
+
+However, from our physical understanding, we know that the former is a **stable equilibrium** while the latter is **unstable**.
+
+More precisely, it a stable equilibrium is one where a small variation from it would lead to a small change;
+while for an unstable one, a small variation would lead to a large change.
+
+Now we shall investigate it mathematically.
+
+When $\theta = \pi$, the Taylor expansion of it is:
+$$
+f(\theta) = f(\pi) + f'(\pi)(\theta - \pi) + \frac{1}{2} f''(\pi) (\theta - \pi)^2 + \dots
+$$
+
+
+Therefore:
+$$
+\sin \theta = 0 + (-1)(\theta - \pi) - 0 + \dots \approx \pi - \theta
+$$
+
+
+Thus, our equation becomes:
+
+$$
+L \theta '' = -g \sin \theta \approx -g (\theta - \pi)
+$$
+
+
+Using the substitution of $u = \theta - \pi, u'' = \theta''$, we get:
+$$
+L u '' = -g u
+$$
+
+
+Solving this using our [known methods](./introduction.ipynb#Polynomial), we get:
+$$
+u = Ae^{\sqrt \frac{g t}{L}} + B e^{-\sqrt \frac{g t}{L}}
+$$
+
+Hence:
+$$
+\theta = Ae^{\sqrt \frac{g t}{L}} + B e^{-\sqrt \frac{g t}{L}} + \pi
+$$
+
+For $\theta_0 = \pi$, we get that $A = -B$ and thus:
+$$
+\theta = Ae^{\sqrt \frac{g t}{L}} - A e^{-\sqrt \frac{g t}{L}} + \pi
+$$
+
+
+```python
+ts = np.linspace(0, 5)
+A = 1
+g = 10
+L = 5
+
+plt.plot(ts, A * np.exp(g * ts / L) - A * np.exp(- g * ts / L) + np.pi)
+plt.show();
+```
+
+Due to the exponential, $\theta$ blows up, hence the equilibrium is **not stable around $\theta = \pi$**.
+
+---
+
+Now when $\theta = 0$, we follow similar steps, and arrive at:
+$$
+L\theta '' \approx -g \theta
+$$
+
+We rewrite it as the form:
+$$
+\theta'' = -\omega ^2 \theta
+$$
+where $\omega = \sqrt \frac{g}{L}$.
+
+It solution is of the form:
+$$
+C \cos(\omega t) + D \sin (\omega t)
+$$
+
+($\omega$ is known as the **angular frequency** of the pendulum)
+
+
+Using the trigonometric identity that:
+$$
+C \cos (x) + D \sin(x) =  \sqrt{C^2 + D^2} \cos (x -\arctan \frac{D}{C})
+$$
+
+it further simplifies to:
 $$
 \theta = A \cos (\omega t - \delta)
 $$
 
-$\omega = \sqrt{\frac{g}{L}}$ is the **angular frequency** of the pendulum.
+for $\theta_0 = 0, \delta = \frac{\pi}{2}$
 
 
-There are 2 equilibrium, $\theta = 0$ and $\theta = \pi$.
+```python
+ts = np.linspace(0, 5)
+A = 1
+g = 10
+L = 5
+omega = np.sqrt(g/L)
+delta = np.pi/2
+
+plt.plot(ts, A * np.cos(omega * ts + delta))
+plt.show();
+```
+
+Since the function is bounded by the cosine, the $\theta$ does not blow up and thus it is stable.
 
 
 
@@ -77,42 +187,144 @@ where $x$ is the amount of extension of the spring and $k$ is the spring constan
 
 This is also known as Hooke's Law.
 
+By Newton's law, the force of the spring and that of the mass should cancel out, giving us:
+$$
+mx'' = -kx \Rightarrow x'' = - \omega ^2 x
+$$
+
+where $\omega = \sqrt{\frac{k}{m}}$ is the **natural frequency** of the system.
+
+Notice that this has the same form as the [pendulum](./Pendulum) (_aka_ simple harmonic oscillator), 
+thus the general solution is the form:
+$$
+x = A \cos (\omega t - \delta)
+$$
+
+
 Now we add a motor to the mass which exerts a force periodically at $F_0 \cos (\alpha t)$,
 where $F_0$ is the amplitude of the force and $\alpha$ is the frequency.
 
-Using Newton's law, we get:
+Our equation now become:
 $$
 m x'' = F_0 \cos \alpha t - kx
 $$
 
-It has the general solution of the form:
+If we further restrict $F_0 \neq 0, x_0 = x_0' = 0$ (_ie_ the spring is relaxed and the mass is not moving initially), then it has the general solution of the form:
 $$
-x = \frac{2 F_0}{m(\alpha ^2 - \omega ^2)} \left(\sin \frac{(a - \omega)t}{2} \right)
+x = \frac{2 F_0}{m(\alpha ^2 - \omega ^2)} 
+\left(\sin \frac{(a - \omega)t}{2} \right)
 \left(\sin \frac{(a + \omega)t}{2} \right)
 $$
+
+
+<details>
+    <summary style="color: blue">$\text{Derivation}$ (Click to expand)</summary>
+    <div style="background: aliceblue">
+    We solve for $mz'' + kz = F_0 e^{i\alpha t}$ instead, for some complex function $z$.
+    Using $z = Ce^{i\alpha t}$, we would arrive at:
+    $$
+    mC(i\alpha)^2 e^{i\alpha t} + Ck e^{i\alpha t} = F_0 e^{i\alpha t}
+    \Rightarrow C = \frac{F_0}{k-m\alpha^2} = \frac{F_0}{m(\omega ^2 - \alpha^2)}
+    $$
+    Equating the real part, and using our simple harmonic oscillator equation, our general solution is of the form
+    $$
+    x = A \cos (\omega t - \delta) + \frac{F_0}{m(\omega ^2 - \alpha^2)} \cos (\alpha t)
+    $$
+    Setting $x_0 = x'_0 = 0$ will give us the following identities:
+    $$
+    A\cos(\delta) + \frac{F_0}{m(\omega ^2 - \alpha^2)} = 0 \quad
+    A\omega \sin(\delta)  = 0 \\
+    $$
+    Since $F_0 \neq 0$, then $A \neq 0$, which means $\delta = 0$ and thus $A = -\frac{F_0}{m(\omega ^2 - \alpha^2)}$, which simplifies our solution to:
+    $$
+    x = \frac{F_0}{m(\omega ^2 - \alpha^2)} \left(\cos (\alpha t) - \cos(\omega t) \right)
+    $$
+    Using some trigonometric identity, we would arrive at our solution above.
+    </div>
+</details>
+
+---
+
+When $\alpha = 0$ (_ie_ our motor never acts), the system is simply a simple harmonic oscillator.
+
+```python
+ts = np.linspace(0, 50, num=1000)
+a = 0
+k = 5
+m = 10
+F0 = 3
+omega = np.sqrt(k/m)
+
+plt.plot(ts, 2 * F0 / (m * (a**2 - omega**2)) * np.sin((a - omega) * ts / 2) * np.sin((a + omega) * ts / 2))
+plt.title("$\\alpha = 0$")
+plt.show();
+```
+
+
+Now when we add the motor in, we can somewhat visualize from the graph that the spring has another external periodic force acting on it.
+
+```python
+a = 1
+k = 5
+m = 10
+F0 = 3
+omega = np.sqrt(k/m)
+
+plt.plot(ts, 2 * F0 / (m * (a**2 - omega**2)) * np.sin((a - omega) * ts / 2) * np.sin((a + omega) * ts / 2))
+plt.show();
+```
+
 
 ### Resonance
 
 Notice that when $\alpha \to \omega$, then 
 $$
-x = \frac{F_0 t}{2m\omega} \sin (\omega t)
+\begin{align*}
+\lim _ {\alpha \to \omega} x &= \frac{2 F_0}{m(\alpha ^2 - \omega ^2)} 
+\left(\sin \frac{(a - \omega)t}{2} \right)
+\left(\sin (\omega t) \right) \\
+&= \frac{2 F_0}{m} \frac{1}{\alpha + \omega} \frac{1}{\alpha - \omega} 
+\left(\sin \frac{(a - \omega)t}{2} \right)
+\left(\sin (\omega t) \right) \\
+&= \frac{2 F_0}{m(2\omega)} \frac{1}{\alpha - \omega}
+\left(\sin \frac{(a - \omega)t}{2} \right)
+\left(\sin (\omega t) \right) \\
+&= \frac{F_0}{m \omega} \frac{t}{2} 
+\left(\sin (\omega t) \right) \quad \text{L'Hopital rule} \\
+&= \frac{F_0 t}{2m\omega} \sin (\omega t)
+\end{align*}
 $$
 
 which increases without bound.
 
 This is **resonance**, which happens when a force is applied to a system that matches its natural frequency.
 
+```python
+ts = np.linspace(0, 50, num=1000)
+k = 5
+m = 10
+F0 = 3
+omega = np.sqrt(k/m)
+a = omega + 0.01
+
+plt.plot(ts, 2 * F0 / (m * (a**2 - omega**2)) * np.sin((a - omega) * ts / 2) * np.sin((a + omega) * ts / 2), label="computed")
+plt.plot(ts, F0 * ts / (2 * m * omega) * np.sin(omega * ts), label="theoratical")
+plt.title("$\\alpha \\to \\omega$")
+plt.legend();
+plt.show();
+```
 
 
+## Conservation
 
-
-## Simple harmonic motion
-
+Newton's 2nd law is expressed using time derivatives, _ie_ $\frac{d}{dt}$.
+But we can also express it in terms of spatial derivative, _ie_ $\frac{d}{dx}$, using the following identity:
 
 $$
-x'' = \frac{d x}{d t} \frac{d x'}{d x} = x' \frac{d x'}{d x} = \frac{1}{2} \frac{d}{dx} x'^2
+\frac{1}{2} \frac{d}{dx} x'^2 = x' \frac{d x'}{d x} = \frac{d x}{d t} \frac{d x'}{d x} = x'' 
 $$
 
+For example, for the simple harmonic oscillator, we can express it as:
 $$
 \begin{gather*}
 mx'' = -kx\\
@@ -129,412 +341,3 @@ and $\frac{1}{2} kx^2$ is the potential energy.
 
 Their sum is equals to a constant, which we call the total energy.
 The fact that the total energy is constant agrees with our understanding about energy conservation.
-
-
-
-
-
-
-
-
-
-A **differential equation** (DE) is an equation that contains some derivatives of a differentiable function.
-
-
-There are some characteristics of DE.
-
-
-## Ordinary
-
-An **ordinary** DE equation has only 1 independent variable.
-All terms in the DE are functions of this variable.
-
-This contrasts with **partial** DE which can have multiple independent variables.
-
-_This module will only focus on ordinary DE's._
-
-
-## Order
-
-The order refers to the highest order derivative of the DE.
-
-
-## Linear
-
-
-A DE is linear if it has the form of:
-
-$$
-F = a_n y^n (x) a_{n-1} y^{n-1} (x) + \cdots + a_1 y^1 (x) + a_0 y(x)
-$$
-
-where $F, a_n$ and $y(x)$ are functions of $x$; $y^{n}(x)$ is the $n$-th derivative of $y$ with respect to $x$.
-
-Less formally, they have the form
-$$
-F = a_0 y + a_1 y' + a_2 y'' + a_3 y''' + \cdots
-$$
-
-A general solution of a $n$-th order DE will have $n$ arbitrary constants.
-
-
-## Separable
-
-A **first order** DE is separable if it can be written as:
-
-$$
-M(x) - N(y) y' = 0
-$$
-
-We can solve this DE by rearranging and integrating both sides, as per below:
-$$
-\begin{align*}
-& M(x) - N(y) y' = 0 \\
-\Rightarrow  & M(x) - N(y) \frac{dy}{dx} = 0 \\
-\Rightarrow  & M(x) = N(y) \frac{dy}{dx} \\
-\Rightarrow  & \int M(x) dx = \int N(y) \frac{dy}{dx} dx + C\\
-\Rightarrow  & \int M(x) dx = \int N(y) dy + C\\
-\end{align*}
-$$
-
-
-### Reduction to separable form
-
-Certain first order DE are not separable, but can be made so by a change of variable.
-
-For equations of the form:
-$$
-y' = g\left(\frac{y}{x}\right)
-$$
-
-_ie_ $g$ is a function  of $\frac{y}{x}$.
-
-We can set $u = \frac{y}{x}$, then $y = ux, y' = u + xu'$.
-
-Substituting back, we get:
-$$
-y' = g(u) = u + xu'
-$$
-
-which is separable:
-$$
-\begin{gather*}
-g(u) = u + xu' \\
-g(u) - u = xu' \\
-\frac{g(u) - u}{x} = u' \\
-\frac{1}{x} = \frac{u'}{g(u) - u} \\
-\end{gather*}
-$$
-
-Thus, we can solve for $u$ and obtain $y$.
-
-
-### Linear change of variable
-
-A DE of the form $y' = f(ax + by +c)$ can be solved by setting $u = ax + by + c$.
-
-
-## Linear first order ODE
-
-Combining our definitions, a linear first order DE has the form of
-$$
-y' + P(x)y = Q(x)
-$$
-
-To solve it, we define a new function $R(x) = e^{\int ^x P(s) ds}$.
-
-Since $R' = RP$, we get $(Ry)' = RPy + Ry'$.
-
-From our equation definition, we get
-$$
-\begin{gather*}
-y' + P(x)y = Q(x) \\
-Q = y' + Py\\
-RQ = Ry' + RPy = (Ry)'
-\end{gather*}
-$$
-
-$R$ is known as the **integrating factor** for the equation.
-
-
-$\example$
-
-Suppose we wish to solve:
-$$
-y' + \frac{2}{x}y = x^2
-$$
-
-$$
-\begin{align*}
-P = \frac{2}{x} &\quad Q = x^2\\
-R &= e^{2 \ln x} = x^2 \\
-RQ &= (Ry)' \\
-\Rightarrow  x^2 x^2 &= (x^2 y)' \\
-\Rightarrow  x^4 &= (x^2 y)' \\
-\Rightarrow  \frac{x^5}{5} &= x^2 y + C \\
-\Rightarrow  y &= \frac{x^3}{5} - \frac{C}{x^2}
-\end{align*}
-$$
-
-We can verify this as:
-$$
-\begin{align*}
-y' &= \frac{3x^2}{5} + \frac{2C}{x^3} \\
-\Rightarrow y' + \frac{2}{x} y &= \frac{3x^2}{5} + \frac{2C}{x^3} + \frac{2}{x} \left( \frac{x^3}{5} - \frac{C}{x^2} \right) \\
-&= \frac{3x^2}{5} + \frac{2C}{x^3} + \frac{2x^2}{5} - \frac{2C}{x^3} \\
-&= \frac{3x^2}{5} + \frac{2x^2}{5}  \\
-&= x^2
-\end{align*}
-$$
-
-
-## Bernoulli equations
-
-Bernoulli equations are of the form:
-$$
-y' + p(x)y = q(x)y^n
-$$
-
-Note that $n = 0$ or $1$ if and only if it is linear.
-
-We substitute using $z = y^{1-n}$.
-
-Then $z' = (1-n) y^{-n} y'$.
-
-$$
-\begin{align*}
-y' + p(x)y &= q(x)y^n \\
-\Rightarrow  
-(1-n) y' + (1-n)y p(x) &= (1-n)y^n q(x) \\
-(1-n) y^{-n} y' + (1-n)y^{1-n} p(x) &= (1-n) q(x) \\
-z' + (1-n) z p(x) &= (1-n) q(x) \\
-\end{align*}
-$$
-
-This is a first order, linear DE which we can solve using the previous method.
-
-
-$\example$
-
-Solve 
-$y' - \frac{2y}{x} = -x^2 y^2$
-
-$$
-\begin{align*}
-p(x) = -\frac{2}{x}, &\quad q(x) = -x^2 \\
-n = 2, & \quad z = y^{1-n} = y^{-1} \\
-z' + (1-n) z p(x) &= (1-n) q(x) \\
-z' + \frac{2z}{x} &= x^2 \\
-\end{align*}
-$$
-
-From our previous example, we solve it as:
-$$
-z &= \frac{x^3}{5} - \frac{C}{x^2}
-$$
-
-Hence,
-$$
-\begin{align*}
-y^{-1} = z = \frac{x^3}{5} - \frac{C}{x^2} \\
-y = \frac{1}{\frac{x^3}{5} - \frac{C}{x^2} } = \frac{5x^2}{x^5 - 5C}
-\end{align*}
-$$
-
-
-## Second order linear DE
-
-**Second order linear DE** are of the form:
-$$
-y'' + p(x) y' + q(x) y = F(x)
-$$
-
-The DE is **homogeneous** if $F(x) = 0$, otherwise it is non-homogeneous.
-
-
-When talking about solutions to the DE, we need to specify the interval $I$ where the solution is valid for all $x$ in $I$.
-
-### Homogeneous DE
-
-$\theorem$:
-For any homogeneous DE, with two solutions on the open interval $I$,
-any linear combinations of the two solutions is also a solution.
-
-This is because the differential are linear in nature, leading to the [linearity of the solution set](../linear_algebra/euclidean_space.ipynb#solution-set-subspace).
-
-
-Note: This does not apply for non-homogeneous or non-linear DE's.
-
-For example, given the non-homogeneous $y'' - y = 1$, $e^x - 1$ is a solution, but $2(e^x - 1)$ is not a solution.
-
-Given the non-linear $yy'' - xy' = 0$, $y=x^2$ is a solution, but $y = 2x^2$ is not a solution.
-
----
-
-A **general solution** of the DE is $y = c_1 y_1 + c_2 y_2$,
-where $y_1, y_2$ are **independent functions** of $x$ defined on $I$,
-and $c_1, c_2$ are arbitrary constants.
-
-The functions are independent if they are not constant multiples of each other.
-
-_See also: [similar definition in linear algebra](../linear_algebra/euclidean_space.ipynb#Linear-independence)_
-
-
-A **particular solution** assigns some value to $c_1, c_2$.
-
-
-#### Constant coefficients
-
-_See also: [Linear algebra approach to solving](../linear_algebra/linear_differential_equations.ipynb#Finding-solutions)_
-
-
-Suppose that $p(x) = a$ and $q(x) = b$ for some constants $a,b$, 
-_ie_, the equation has the form
-$$
-y'' + ay' + by = 0
-$$
-
-Notice that we need the $y''$, $y'$ and $y$ terms to cancel each other out.
-This rules out polynomials as the degree of each subsequent term would be decreasing, preventing us from cancelling them.
-
-This inspires us to use $e^{\lambda x}$, since each subsequent term can cancel each other out.
-
-Substituting, we get:
-$$
-(\lambda ^2 + a \lambda + b) e^{\lambda x} = 0
-$$
-
-Since $e^{\lambda x} > 0$, we can only have a solution when $\lambda ^2 + a\lambda  + b = 0$.
-
-This is the **characteristic equation**.
-
-The roots of the equation are:
-$$
-\lambda_1 = \frac{-a + \sqrt{a^2 -4b}}{2} \quad
-\lambda_2 = \frac{-a - \sqrt{a^2 -4b}}{2}
-$$
-
-The roots determines the final form of our solution:
-
-
-##### Distinct roots
-
-If $a^2 -4b > 0$, then there are two distinct real roots.
-Then our solution has the form 
-$$
-y = c_1 e^{\lambda _1 x} + c_2 e^{\lambda_2 x}
-$$
-
-
-##### Repeated roots
-
-If $a^2 - 4b = 0$, then $\lambda _1 = \lambda 2 = - \frac{a}{2}$.
-
-We know that one of the solution is $y_1 = e^{-\frac{a}{2}x}$, but we need one more.
-
-We can try $y_2 = xe^{-\frac{a}{2} x}$, and we will notice that this indeed works.
-
-Hence, our solution is of the form:
-$$
-y = (c_1 + c_2x) e^{-\frac{a}{2} x} 
-$$
-
-
-##### Complex roots
-
-If $a^2 - 4b < 0$, then we have complex roots.
-
-The solution is the same as in the [distinct roots](#Distinct-roots) case, but we can simplify:
-
-$$
-\begin{align*}
-y &= c_1 e^{\lambda _1 x} + c_2 e^{\lambda_2 x} \\
-&= c_1 e^{\frac{-a + \sqrt{a^2 - 4b}}{2} x} + c_2 e^{\frac{-a - \sqrt{a^2 - 4b}}{2} x} \\
-&= e^{\frac{-a}{2} x} \left(c_1 e^{\frac{\sqrt{a^2 -4b}}{2}x} + c_2 e^{-\frac{\sqrt{a^2 -4b}}{2}x} \right) \\
-&= e^{\frac{-a}{2} x} \left(c_1 e^{\frac{\sqrt{4b - a^2}}{2} ix} + c_2 e^{-\frac{\sqrt{4b - a^2}}{2} ix} \right) \\
-&= e^{\frac{-a}{2} x} \left(c_1 e^{\omega ix} + c_2 e^{-\omega ix} \right) \quad \omega = \frac{\sqrt{4b - a^2}}{2} = \sqrt{b -\frac{a^2}{4}}\\
-&= e^{\frac{-a}{2} x} \left(c_1 \left(\cos \omega x + i \sin \omega x \right) + c_2 \left(\cos (-\omega x) + i \sin (-\omega x)  \right)  \right) \\
-&= e^{\frac{-a}{2} x} \left((c_1 + c_2) \cos \omega x + (c_1 - c_2) i \sin \omega x \right)\\
-&= e^{\frac{-a}{2} x} \left(C_1 \cos \omega x + C_2 \sin \omega x \right) \quad C_1 = c_1 + c_2, C_2 = (c_1 - c_2) i\\
-\end{align*}
-$$
-
-### Non-homogeneous DE
-
-$\theorem$:
-A general solution of the non-homogeneous DE has the form:
-$$
-y(x) = y_h(x) = y_p(x)
-$$
-
-where $y_h(x) = c_1y_1(x) + c_2 y_2(x)$ is a general solution to the homogeneous DE,
-and  $y_p(x)$ is _any_ solution to the non-homogeneous DE.
-
-
-There are 2 ways to find $y_p(x)$:
-
-#### Solving algebraically
-
-Recall: 
-
-$$
-y'' + p(x) y' + q(x) y = F(x)
-$$
-
-We can solve algebraically, depending on the form of $F(x)$.
-
-
-##### Polynomial
-
-
-We set $y$ as a polynomial with the same order as $F(x)$, with unknown coefficients.
-We differentiate and compare the terms to get the value of the coefficients.
-
-
-
-$\example$
-
-To solve $y'' - 4y' + y = x^2 +1$, we set $y = Ax^2 + Bx + C$.
-
-Then, 
-$$
-\begin{gather*}
-2A - 4(2Ax + B) + Ax^2 + Bx + C = x^2 + 1 \\
-Ax^2 + (B - 8A)x + 2A - 4B + C = x^2 + 1\\
-\Rightarrow A = 1 \\
-B - 8A = 0 \Rightarrow B = 8 \\
-2A - 4B + C = 1 \Rightarrow C = 31 \\
-y_p(x) = x^2 + 8x + 31
-\end{gather*}
-$$
-
-
-
-##### Exponential
-
-
-Set $y = u e^{kx}$ for some function $u$.
-
-Then the substitution will reduce it into a [polynomial case](#Polynomial).
-
-
-##### Trigonometric
-
-
-We use $y = 
-
-
-#### Variation of parameters
-
-$\theorem$:
-Given the homogeneous solutions, $y_1, y_2$,
-a particular solution is
-$$
-y_p(x) = u' y_1' + v' y_2 '
-$$
-
-where:
-$$
-u = - \int \frac{y_2 F(x)}{y_1 y_2 ' - y_1 ' y_2} \quad
-v = \int \frac{y_1 F(x)}{y_1 y_2 ' - y_1 ' y_2}
-$$

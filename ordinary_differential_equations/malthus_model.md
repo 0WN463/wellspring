@@ -147,9 +147,9 @@ $$
 
 
 ```python
-s = 0.0001
+s = 0.01
 B = 1.5
-N0 = 1000
+N0 = 10
 
 plt.plot(ts, B / (s + (B / N0 - s) * np.exp(-B * ts)))
 plt.axhline(y = B / s, color = 'black', label = r"$\frac{B}{s} = " + f"{B/s:.2f}$")
@@ -182,8 +182,6 @@ $$
 
 
 ```python
-s = 0.002
-B = 1.5
 N0 = 1000
 
 plt.plot(ts, B / (s - (s - B / N0) * np.exp(-B * ts)))
@@ -197,6 +195,20 @@ Now instead, our population drops until it reaches a limit.
 This models the situation where the initial population is too large be sustain, thus there are many deaths until the population reaches a sustainable level.
 
 $\frac{B}{s}$ is known as the **carrying capacity/sustainable population**, which is the value of $N$ as $t \to \infty$.
+
+
+Plotting these together, we can see that either the population increases to the limit, or dwindles to it, depending on the starting population.
+
+```python
+N0 = 10
+N0_p = 1000
+
+plt.plot(ts, B / (s - (s - B / N0) * np.exp(-B * ts)))
+plt.plot(ts, B / (s - (s - B / N0_p) * np.exp(-B * ts)))
+plt.axhline(y = B / s, color = 'black', label = r"$\frac{B}{s} = " + f"{B/s:.2f}$")
+plt.legend();
+plt.show();
+```
 
 ---
 
@@ -290,9 +302,9 @@ In order words:
 $$
 \frac{dN}{dt} 
 \begin{cases}
-< 0 \quad \text{if } 0 < N < \beta _1 \\
-> 0 \quad \text{if } \beta_1 < N < \beta _2 \\
-< 0 \quad \text{if } N  > \beta_2
+ < 0 \quad \text{if } 0 < N < \beta _1 \\
+ > 0 \quad \text{if } \beta_1 < N < \beta _2 \\
+ < 0 \quad \text{if } N  > \beta_2
 \end{cases}
 $$
 
@@ -378,10 +390,9 @@ Hence, there are 3 possible outcomes depending on the population when we are fis
 * We fish at $\beta _1 < N < \beta _2$ which allows the population to grow to $\beta _2$ 
 * We fish at $\beta _2 < N$ which causes the population to dwindle to $\beta _2$
 
-Notice that $\beta _1 < N < \beta _2$ is similar to the logistic curve.
+Notice that $\beta _1 < N < \beta _2$ is similar to the [logistic curve](#Logistic-model).
 
-TODO: insert link
-Also, $\beta_1$ is the unstable equilibrium, while $\beta_2$ is stable.
+Also, [$\beta_1$ is the unstable equilibrium, while $\beta_2$ is stable](./applications.ipynb#Equilibrium).
 
 
 ### One root
@@ -422,7 +433,7 @@ $$
 	N &= \frac{1}{st - C} + \frac{B}{2s}\\
 	N_0 &= -\frac{1}{C} + \frac{B}{2s}\\
 	\Rightarrow
-	C = \frac{1}{\frac{B}{2s} - N_0} \\
+	C &= \frac{1}{\frac{B}{2s} - N_0} \\
 	QED
 	\end{align*}
         </p>
