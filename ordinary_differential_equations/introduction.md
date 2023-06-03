@@ -34,11 +34,6 @@ $$
 \newcommand\dels[2]{\frac{\partial #1}{\partial #2}} 
 $$
 
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-```
-
 # Introduction
 
 
@@ -162,8 +157,9 @@ $$
 $R$ is known as the **integrating factor** for the equation.
 
 
-$\example$
-
+<details>
+<summary style=\color: blue\>$\example$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
 Suppose we wish to solve:
 $$
 y' + \frac{2}{x}y = x^2
@@ -191,6 +187,8 @@ y' &= \frac{3x^2}{5} + \frac{2C}{x^3} \\
 &= x^2
 \end{align*}
 $$
+</div>
+</details>
 
 
 ## Bernoulli equations
@@ -219,8 +217,9 @@ $$
 This is a first order, linear DE which we can solve using the previous method.
 
 
-$\example$
-
+<details>
+<summary style=\color: blue\>$\example$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
 Solve 
 $y' - \frac{2y}{x} = -x^2 y^2$
 
@@ -245,6 +244,8 @@ y^{-1} = z = \frac{x^3}{5} - \frac{C}{x^2} \\
 y = \frac{1}{\frac{x^3}{5} - \frac{C}{x^2} } = \frac{5x^2}{x^5 - 5C}
 \end{align*}
 $$
+</div>
+</details>
 
 
 ## Second order linear DE
@@ -399,8 +400,9 @@ We differentiate and compare the terms to get the value of the coefficients.
 
 
 
-$\example$
-
+<details>
+<summary style=\color: blue\>$\example$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
 To solve $y'' - 4y' + y = x^2 +1$, we set $y = Ax^2 + Bx + C$.
 
 Then, 
@@ -414,6 +416,9 @@ B - 8A = 0 \Rightarrow B = 8 \\
 y_p(x) = x^2 + 8x + 31
 \end{gather*}
 $$
+</div>
+</details>
+
 
 
 
@@ -434,8 +439,9 @@ We will, instead, solve for using $F(x) = s(x) e^{Aix}$.
 Since $e^{Aix} = \cos Ax + i \sin Ax$, we can solve this equation first,
 then equate the real and imaginary part to get the solution to our original equation.
 
-$\example$
-
+<details>
+<summary style=\color: blue\>$\example$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
 To solve $y'' + 4y' = 16x \sin 2x$, we solve this instead: $y'' - 4y' = 16x e^{i 2x}$.
 
 \begin{align*}
@@ -468,6 +474,9 @@ Since we want the $\sin$, we find the imaginary component and get:
 $$
 y = Im (z) = x \sin 2x - 2x^2 \cos x
 $$
+</div>
+</details>
+
 
 
 #### Variation of parameters
@@ -550,8 +559,9 @@ $QED$
 </details>
 
 
-$\example$
-
+<details>
+<summary style=\color: blue\>$\example$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
 We now solve this equation again:
 
 $$y'' - 4y' + y = x^2 +1$$
@@ -575,7 +585,8 @@ v &= \frac{1}{(\lambda_1 - \lambda_2)} \frac{(\lambda_2^2(x^2 + 1) + 2\lambda_2x
 $$
 
 After simplifying, we indeed get the same answer as with solving using variation of parameters (though the simplification may be tedious).
-
+</div>
+</details>
 
 ```python
 from sympy import Symbol, simplify, sqrt, exp
