@@ -312,7 +312,7 @@ $$
 f_h(t) = 
 \begin{cases}
 0 & t < 0 \\
-\frac{1}{h}{ & 0 \leq t \leq h \\
+\frac{1}{h} & 0 \leq t \leq h \\
 0 & t > h \\
 \end{cases}
 $$
@@ -322,7 +322,7 @@ In order words, this is a function with a very large value at $t=0$, but still m
 
 Given any function $g(t)$, suppose we consider:
 $$
-\int ^ \infty _0 f_h(t) g(t) dt = \frac{1}{h} ^ h _0 g(t) dt
+\int ^ \infty _0 f_h(t) g(t) dt = \frac{1}{h} \int ^h _0 g(t) dt
 $$
 
 Notice that $h \to 0$, then $\int ^h _0 g(t) dt \to g(0) h$.
@@ -398,4 +398,4 @@ plt.show()
 ```
 
 Indeed, our equation does describe how the medicine changes over time, even accounting for the injection.
-Note that is would be rather difficult to derive without the Laplace transform as we would be dealing with the discontinuity due to the injection.
+Note that this would be rather difficult to derive without the Laplace transform as we would be dealing with the discontinuity due to the injection.

@@ -89,13 +89,13 @@ $$
 Thus, our equation becomes:
 
 $$
-L \theta '' = -g \sin \theta \approx -g (\theta - \pi)
+L \theta '' = -g \sin \theta \approx g (\theta - \pi)
 $$
 
 
 Using the substitution of $u = \theta - \pi, u'' = \theta''$, we get:
 $$
-L u '' = -g u
+L u '' = g u
 $$
 
 

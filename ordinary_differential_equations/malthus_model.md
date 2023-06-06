@@ -302,9 +302,9 @@ In order words:
 $$
 \frac{dN}{dt} 
 \begin{cases}
- < 0 \quad \text{if } 0 < N < \beta _1 \\
- > 0 \quad \text{if } \beta_1 < N < \beta _2 \\
- < 0 \quad \text{if } N  > \beta_2
+ < 0 \quad \text{if } 0 < N < \beta _1 
+\\ > 0 \quad \text{if } \beta_1 < N < \beta _2 
+\\ < 0 \quad \text{if } N  > \beta_2
 \end{cases}
 $$
 
