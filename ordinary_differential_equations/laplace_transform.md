@@ -61,8 +61,10 @@ $$
 
 
 
-$\example$
 
+<details>
+<summary style=\color: blue\>$\example$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
 Given $f(t) = e^{2t}$.
 
 Then
@@ -81,11 +83,13 @@ $$
 
 When $s \leq 2$, the value diverges, and thus the Laplace transform is not well-defined.
 
-When $s > 0$, the value converges to $\frac{1}{s- 2}$.
+When $s > 2$, the value converges to $\frac{1}{s- 2}$.
 Thus, the Laplace transform (for $s > 2)$ is: 
 $$
-F(s) = \frac{1}{s-a} \quad s > 2
+F(s) = \frac{1}{s-2} \quad s > 2
 $$
+</div>
+</details>
 
 
 $\theorem$
@@ -101,6 +105,51 @@ L^{-1}(a F(s) + b G(s)) = a L^{-1}(F) + b L^{-1} (G)
 $$
 
 This is a rather significant property because it makes manipulating the Laplace expressions easier.
+
+
+## Table of Laplace transforms
+
+|$f(t)$ | $F(s)$ |
+|---|---|
+| $e^{at}$ | $\frac{1}{s-a} \quad s > a$ |
+| $1$ | $\frac{1}{s} \quad s > 0$ |
+| $\cos wt$ | $\frac{s}{s^2 + w^2}$ |
+| $\sin wt$ | $\frac{w}{s^2 + w^2}$ |
+| $t^n$ | $\frac{n!}{s^{n+1}}$ |
+| [$u(t-a)$](#Unit-step-function) | $\frac{e^{-as}}{s}$ |
+| [$\delta(t)$](#Dirac-delta-function) | $1$ |
+
+
+<details>
+<summary style=\color: blue\>$\textbf{Derivation}$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
+(1) can be proven similarly using the first example.
+
+(2) can be proven as a special case of (1) when $a=0$.
+
+For (3) and (4), we set $a = iw$, then we get:
+$$
+\displaylines{
+f(t) = e^{iwt} = \cos wt + i \sin t \\
+F(s) = \frac{1}{s-iw} = \frac{s + iw}{s^2 + w^2}
+}
+$$
+
+For (5), we solve it directly:
+$$
+\begin{align*}
+L(t^n) &= \int ^ \infty _0 e^{-st} t^n dt \\
+&= -\left[ \frac{1}{s}e^{-st}t^n \right] ^\infty _0 + \frac{n}{s} \int ^ \infty _0 e^{-st} t^{n-1} dt \\
+&= \frac{n}{s} \int ^ \infty _0 e^{-st} t^{n-1} dt \\
+\end{align*}
+$$
+
+From here, we can prove it by induction.
+
+The other identities are proven in their respective sections.
+</div>
+</details>
+
 
 ## Piecewise continuous functions
 
@@ -148,8 +197,9 @@ Notice that integration of $f$ becomes a division of $F$ by $s$.
 
 
 
-$\example$
-
+<details>
+<summary style=\color: blue\>$\example$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
 Suppose that we wish to find $L^{-1} \frac{1}{s(s^2 + 1)}$
 
 We know that
@@ -178,6 +228,8 @@ $$
 L(1 - \cos t) = \frac{1}{s} - \frac{s}{s^2 + 1} = \frac{s^2 + 1 - s^2}{s(s^2 + 1)}
 = \frac{1}{s(s^2 + 1)}
 $$
+</div>
+</details>
 
 
 ## Shifting
@@ -214,6 +266,7 @@ $$
 ts = np.linspace(0, 10, num=100)
 a = 4
 plt.plot(ts, np.where(ts < a, 0, 1))
+plt.show()
 ```
 
 This function does appear frequently in real life, such as the behaviour of voltage when turning on a switch.
@@ -229,7 +282,7 @@ However, if we use the Laplace transform, it wouldn't be an issue.
 $\theorem$
 If $f$ has a Laplace transform for $s > a$, then:
 $$
-F(s - c) = L(e^{ct}{f(t)}, \quad s > a + c
+F(s - c) = L(e^{ct}{f(t)}), \quad s > a + c
 $$
 
 This gives us the following more general identities:
@@ -240,7 +293,6 @@ L(e^{ct} \cos \omega t) = \frac{s-c}{(s-c)^2 + \omega^2} \\
 L(e^{ct} \sin \omega t) = \frac{\omega}{(s-c)^2 + \omega^2} 
 \end{gather*}
 $$
-
 
 
 
@@ -278,8 +330,10 @@ We then split it into sum of fractions of whose inverses we can find.
 Then lastly, $y$ is simply the sum of the inverses.
 
 
-$\example$
 
+<details>
+<summary style=\color: blue\>$\example$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
 Suppose that we wish to solve for:
 $$
 y'' + y = e^{2t}, \quad y(0) = 0, y'(0) = 1
@@ -295,13 +349,8 @@ Y &=\frac{1 + R}{s^2 + 1} \\
 y &= \frac{1}{5} e^{2t} - \frac{1}{5} \cos t + \frac{3}{5} \sin t\\
 \end{align*}
 $$
-
-
-
-
-
-
-
+</div>
+</details>
 
 
 ### Dirac delta function
@@ -353,7 +402,9 @@ Dirac functions are useful in modelling situations where an event occurs at some
 
 
 
-$\example$
+<details>
+<summary style=\color: blue\>$\example$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
 A patient has 100mg of a medicine at $t=0$.
 He is given another 100mg of the same medicine at $t=1$.
 Suppose that in the body, the medicine decays to half its value every 1 hour.
@@ -379,17 +430,17 @@ $$
 y' = -ky + 100\delta(t)
 $$
 
-
 $$
 sY - y(0) = -kY + 100e^{-s}
 $$
-
 
 $$
 Y = \frac{100e^{-s} + 100}{s+k}
 = 100e^{-kt} + 100e^{-k(t-1)} u(t-1)
 = 100 (0.5)^t + 100 (0.5)^{t-1} u(t-1)
 $$
+</div>
+</details>
 
 ```python
 ts = np.linspace(0, 5, num=100)
@@ -399,3 +450,4 @@ plt.show()
 
 Indeed, our equation does describe how the medicine changes over time, even accounting for the injection.
 Note that this would be rather difficult to derive without the Laplace transform as we would be dealing with the discontinuity due to the injection.
+
