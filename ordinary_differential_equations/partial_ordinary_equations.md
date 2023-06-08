@@ -34,452 +34,255 @@ $$
 \newcommand\dels[2]{\frac{\partial #1}{\partial #2}} 
 $$
 
-```python
-import numpy as np
+# Partial differential equation 
 
-import matplotlib.pyplot as plt
-```
+A **partial differential equation** (PDE) is an equation with a known function $u$ of two or more **independent** variables, $x, y, \dots$ and partial derivatives of $u$ with respect to them.
+
+The solution to ODE contains arbitrary constants, and thus by extension, we would arrive at the fact the **solutions of PDE** have arbitrary functions.
+
+
+<details>
+<summary style=\color: blue\>$\example$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
+For $u_{xx} + u_{yy} = 0$, all these are valid solutions:
+$$
+\displaylines{
+u = x^2 - y^2 \\
+u = e^{x} \sin y \\
+u = \ln(x^2 + y^2)
+}
+$$
+</div>
+</details>
+
+## Separation of variables
+
+We assume that the solution is of the form:
+$$
+u = X(x) Y(y)
+$$
+
+Then notice that:
+$$
+\displaylines{
+u_x = X' Y \\
+u_y = X Y'\\
+u_{xx} = X'' Y\\
+u_{xy} = X'Y' \\
+u_{yy} = XY''
+}
+$$
+
+Now suppose that we are given an equation of the form:
+$$
+u_x = f(x) g(y) u_y
+$$
+
+Then we can do our above substitution and get:
+$$
+\begin{align}
+X' Y &= f(x) g(y) XY'\\
+\frac{1}{f(x)} \frac{X'}{X} &= g(y) \frac{Y'}{Y}
+\end{align}
+$$
+
+Since the $x,y$ are independent, and we have a function of $x$ on the left and a function of $y$ on the right,
+the only way they can be equal is if they are some constant.
+
+$$
+\begin{align}
+\frac{1}{f(x)} \frac{X'}{X} &= g(y) \frac{Y'}{Y}\\
+\Rightarrow
+\frac{1}{f(x)} \frac{X'}{X} = k & \quad g(y) \frac{Y'}{Y} = k \\
+\Rightarrow
+X' = kX f(x) & \quad Y' = \frac{kY}{g(y)}
+\end{align}
+$$
+
+From here, we can solve them separately as per a normal ODE and get the solution.
+
+## Applications
+
+### Wave equation
+
+Suppose that we have the following:
+* a string that is stretch tightly across the $x$-axis.
+* each of its endpoints are tied to $y=0$, spanning from $x=0$ to $x = \pi$.
+* the initial shape of the string is $y = f(x)$.
+* the string is initially stationary, 
+
+We want to model the shape of the string over time.
+Thus, we need $y$ to be a function of $x$ and $t$.
+
+Using the above assumptions, we arrive at the following constraints:
+$$
+f(t, 0) = 0
+f(t, \pi) = 0
+f(0, x) = f(x)
+$\dels{y}{x} = 0$
+$$
+
+Using some physics, we would arrive at the following:
+$$
+c^2 \dels{ ^2 y }{x^2} = \dels{^2y}{t^2}
+$$
+
+where $c$ is an arbitrary constant.
+
+
+We notice that one possible solution to it is:
+$$
+y = \frac{1}{2}\left( f(x + ct) + f(x - ct) \right)
+$$
+
+We can verify that our constraints hold for this equation.
+(We need to extend $f$ to be an odd periodic function with a period of $2\pi$ to allow $f$ to be defined outside of $[0, \pi]$).
+
+Suppose we consider that $f = \sin 2x$.
 
 ```python
 %matplotlib notebook
-```
 
-```python
+from IPython.display import HTML
 import matplotlib.pyplot as plt
 import matplotlib.animation
 import numpy as np
 
-def f(x):
-    return np.sin(2 * x)
-f = np.vectorize(f)
+c = 0.5
+f = np.vectorize(lambda x: np.sin(2 * x))
+func = lambda x, t: 0.5 * (f(x + c * t) + f(x - c * t))
 
-t = np.linspace(0, 30)
+def plot(func, x_max, t_max=10):
+    fig, ax = plt.subplots()
+    ax.axis([0, x_max,-3,3])
+    l, = ax.plot([],[])
 
-fig, ax = plt.subplots()
-ax.axis([0,np.pi,-3,3])
-l, = ax.plot([],[])
+    t = np.linspace(0, t_max)
+    xs = np.linspace(0, x_max, num=1000)
 
-def animate(i):
-    l.set_data(xs, 0.5 * (f(xs + c * t[i]) + f(xs - c * t[i])))
+    def animate(i):
+        l.set_data(xs, func(xs, t[i]))
 
-ani = matplotlib.animation.FuncAnimation(fig, animate, frames=len(t))
+    return matplotlib.animation.FuncAnimation(fig, animate, frames=len(t))
 
-from IPython.display import HTML
+
+ani = plot(func, np.pi)
 HTML(ani.to_jshtml())
-
 ```
+
+When we look at the change of the string over time, it looks natural and intuitive, albeit a bit too theoretical.
+
+
 
 ```python
-xs = np.linspace(0, np.pi, num=1000)
-c = 0.2
+f = np.vectorize(lambda x: np.sin(x) * np.cos(3 *x))
 
-ts = np.linspace(-4 * np.pi, 4 * np.pi)
-
-for t in np.linspace(0, 10, num=10):
-    ys = 0.5 * (f(xs + c * t) + f(xs - c * t))
-    plt.plot(xs, ys)
+ani = plot(func, np.pi)
+HTML(ani.to_jshtml())
 ```
 
-# Introduction
+When we look at $f = \sin x \cos 3x$, this looks surprisingly natural.
 
+### Heat equation
 
-A **differential equation** (DE) is an equation that contains some derivatives of a differentiable function.
+Suppose that we have:
+* a thin bar made of homogeneous material
+* oriented along the $x$-axis
+* is perfectly insulated laterally, so heat only flows in the $x$-direction
 
-
-There are some characteristics of DE.
-
-
-## Ordinary
-
-An **ordinary** DE equation has only 1 independent variable.
-All terms in the DE are functions of this variable.
-
-This contrasts with **partial** DE which can have multiple independent variables.
-
-_This module will only focus on ordinary DE's._
-
-
-## Order
-
-The order refers to the highest order derivative of the DE.
-
-
-## Linear
-
-
-A DE is linear if it has the form of:
-
+This means that the temperature $u$ only depends on $x$ and $t$, and is governed by the following heat equation:
 $$
-F = a_n y^n (x) a_{n-1} y^{n-1} (x) + \cdots + a_1 y^1 (x) + a_0 y(x)
+u_t = c^2 u_{xx}
 $$
+where $c^2$ is the thermal diffusivity ($length^2/time$) of the material.
 
-where $F, a_n$ and $y(x)$ are functions of $x$; $y^{n}(x)$ is the $n$-th derivative of $y$ with respect to $x$.
-
-Less formally, they have the form
-$$
-F = a_0 y + a_1 y' + a_2 y'' + a_3 y''' + \cdots
-$$
-
-A general solution of a $n$-th order DE will have $n$ arbitrary constants.
-
-
-## Separable
-
-A **first order** DE is separable if it can be written as:
-
-$$
-M(x) - N(y) y' = 0
-$$
-
-We can solve this DE by rearranging and integrating both sides, as per below:
-$$
-\begin{align*}
-& M(x) - N(y) y' = 0 \\
-\Rightarrow  & M(x) - N(y) \frac{dy}{dx} = 0 \\
-\Rightarrow  & M(x) = N(y) \frac{dy}{dx} \\
-\Rightarrow  & \int M(x) dx = \int N(y) \frac{dy}{dx} dx + C\\
-\Rightarrow  & \int M(x) dx = \int N(y) dy + C\\
-\end{align*}
-$$
-
-
-### Reduction to separable form
-
-Certain first order DE are not separable, but can be made so by a change of variable.
-
-For equations of the form:
-$$
-y' = g\left(\frac{y}{x}\right)
-$$
-
-_ie_ $g$ is a function  of $\frac{y}{x}$.
-
-We can set $u = \frac{y}{x}$, then $y = ux, y' = u + xu'$.
-
-Substituting back, we get:
-$$
-y' = g(u) = u + xu'
-$$
-
-which is separable:
-$$
-\begin{gather*}
-g(u) = u + xu' \\
-g(u) - u = xu' \\
-\frac{g(u) - u}{x} = u' \\
-\frac{1}{x} = \frac{u'}{g(u) - u} \\
-\end{gather*}
-$$
-
-Thus, we can solve for $u$ and obtain $y$.
-
-
-### Linear change of variable
-
-A DE of the form $y' = f(ax + by +c)$ can be solved by setting $u = ax + by + c$.
-
-
-## Linear first order ODE
-
-Combining our definitions, a linear first order DE has the form of
-$$
-y' + P(x)y = Q(x)
-$$
-
-To solve it, we define a new function $R(x) = e^{\int ^x P(s) ds}$.
-
-Since $R' = RP$, we get $(Ry)' = RPy + Ry'$.
-
-From our equation definition, we get
-$$
-\begin{gather*}
-y' + P(x)y = Q(x) \\
-Q = y' + Py\\
-RQ = Ry' + RPy = (Ry)'
-\end{gather*}
-$$
-
-$R$ is known as the **integrating factor** for the equation.
-
-
-$\example$
-
-Suppose we wish to solve:
-$$
-y' + \frac{2}{x}y = x^2
-$$
-
-$$
-\begin{align*}
-P = \frac{2}{x} &\quad Q = x^2\\
-R &= e^{2 \ln x} = x^2 \\
-RQ &= (Ry)' \\
-\Rightarrow  x^2 x^2 &= (x^2 y)' \\
-\Rightarrow  x^4 &= (x^2 y)' \\
-\Rightarrow  \frac{x^5}{5} &= x^2 y + C \\
-\Rightarrow  y &= \frac{x^3}{5} - \frac{C}{x^2}
-\end{align*}
-$$
-
-We can verify this as:
-$$
-\begin{align*}
-y' &= \frac{3x^2}{5} + \frac{2C}{x^3} \\
-\Rightarrow y' + \frac{2}{x} y &= \frac{3x^2}{5} + \frac{2C}{x^3} + \frac{2}{x} \left( \frac{x^3}{5} - \frac{C}{x^2} \right) \\
-&= \frac{3x^2}{5} + \frac{2C}{x^3} + \frac{2x^2}{5} - \frac{2C}{x^3} \\
-&= \frac{3x^2}{5} + \frac{2x^2}{5}  \\
-&= x^2
-\end{align*}
-$$
-
-
-## Bernoulli equations
-
-Bernoulli equations are of the form:
-$$
-y' + p(x)y = q(x)y^n
-$$
-
-Note that $n = 0$ or $1$ if and only if it is linear.
-
-We substitute using $z = y^{1-n}$.
-
-Then $z' = (1-n) y^{-n} y'$.
-
-$$
-\begin{align*}
-y' + p(x)y &= q(x)y^n \\
-\Rightarrow  
-(1-n) y' + (1-n)y p(x) &= (1-n)y^n q(x) \\
-(1-n) y^{-n} y' + (1-n)y^{1-n} p(x) &= (1-n) q(x) \\
-z' + (1-n) z p(x) &= (1-n) q(x) \\
-\end{align*}
-$$
-
-This is a first order, linear DE which we can solve using the previous method.
-
-
-$\example$
-
-Solve 
-$y' - \frac{2y}{x} = -x^2 y^2$
-
-$$
-\begin{align*}
-p(x) = -\frac{2}{x}, &\quad q(x) = -x^2 \\
-n = 2, & \quad z = y^{1-n} = y^{-1} \\
-z' + (1-n) z p(x) &= (1-n) q(x) \\
-z' + \frac{2z}{x} &= x^2 \\
-\end{align*}
-$$
-
-From our previous example, we solve it as:
-$$
-z &= \frac{x^3}{5} - \frac{C}{x^2}
-$$
-
-Hence,
-$$
-\begin{align*}
-y^{-1} = z = \frac{x^3}{5} - \frac{C}{x^2} \\
-y = \frac{1}{\frac{x^3}{5} - \frac{C}{x^2} } = \frac{5x^2}{x^5 - 5C}
-\end{align*}
-$$
-
-
-## Second order linear DE
-
-**Second order linear DE** are of the form:
-$$
-y'' + p(x) y' + q(x) y = F(x)
-$$
-
-The DE is **homogeneous** if $F(x) = 0$, otherwise it is non-homogeneous.
-
-
-When talking about solutions to the DE, we need to specify the interval $I$ where the solution is valid for all $x$ in $I$.
-
-### Homogeneous DE
-
-$\theorem$:
-For any homogeneous DE, with two solutions on the open interval $I$,
-any linear combinations of the two solutions is also a solution.
-
-This is because the differential are linear in nature, leading to the [linearity of the solution set](../linear_algebra/euclidean_space.ipynb#solution-set-subspace).
-
-
-Note: This does not apply for non-homogeneous or non-linear DE's.
-
-For example, given the non-homogeneous $y'' - y = 1$, $e^x - 1$ is a solution, but $2(e^x - 1)$ is not a solution.
-
-Given the non-linear $yy'' - xy' = 0$, $y=x^2$ is a solution, but $y = 2x^2$ is not a solution.
+We now further constrain our system:
+* the ends of the bar ($x = 0, x = L$) are always at temperature $0$
+* the initial temperature of the bar is modelled by $u(x, 0) = f(x)$
 
 ---
 
-A **general solution** of the DE is $y = c_1 y_1 + c_2 y_2$,
-where $y_1, y_2$ are **independent functions** of $x$ defined on $I$,
-and $c_1, c_2$ are arbitrary constants.
-
-The functions are independent if they are not constant multiples of each other.
-
-_See also: [similar definition in linear algebra](../linear_algebra/euclidean_space.ipynb#Linear-independence)_
-
-
-A **particular solution** assigns some value to $c_1, c_2$.
-
-
-#### Constant coefficients
-
-_See also: [Linear algebra approach to solving](../linear_algebra/linear_differential_equations.ipynb#Finding-solutions)_
-
-
-Suppose that $p(x) = a$ and $q(x) = b$ for some constants $a,b$, 
-_ie_, the equation has the form
+Suppose that we are given the following system:
 $$
-y'' + ay' + by = 0
+u_t = 2 u_{xx}
+$$
+with $L = 3$ and $f(x) = 5 \sin 4 \pi x$.
+
+When we solve the equation, we will arrive at:
+$$
+u = 5e^{-32\pi^2t} \sin 4 \pi x
 $$
 
-Notice that we need the $y''$, $y'$ and $y$ terms to cancel each other out.
-This rules out polynomials as the degree of each subsequent term would be decreasing, preventing us from cancelling them.
+<details>
+<summary style=\color: blue\>$\textbf{Derivation}$ (Click to expand)</summary>
+<div style=\background: aliceblue\>
+Let $u = X(x) T(t)$.
 
-This inspires us to use $e^{\lambda x}$, since each subsequent term can cancel each other out.
-
-Substituting, we get:
+Then
 $$
-(\lambda ^2 + a \lambda + b) e^{\lambda x} = 0
-$$
-
-Since $e^{\lambda x} > 0$, we can only have a solution when $\lambda ^2 + a\lambda  + b = 0$.
-
-This is the **characteristic equation**.
-
-The roots of the equation are:
-$$
-\lambda_1 = \frac{-a + \sqrt{a^2 -4b}}{2} \quad
-\lambda_2 = \frac{-a - \sqrt{a^2 -4b}}{2}
+XT' = 2X'' T \Rightarrow \frac{X''}{X} = {T'}{2T}
 $$
 
-The roots determines the final form of our solution:
-
-
-##### Distinct roots
-
-If $a^2 -4b > 0$, then there are two distinct real roots.
-Then our solution has the form 
+Thus:
 $$
-y = c_1 e^{\lambda _1 x} + c_2 e^{\lambda_2 x}
+X'' = k X \quad T' = 2kT
 $$
 
+Now we focus on $X'' - kX = 0$.
+We [know](introduction.ipynb#Constant-coefficients) that this either have solutions that are exponential or trigonometrical, based on the value of $k$.
 
-##### Repeated roots
+But since we want $X(0) = 0$ and $X(L) = 0$, it rules out the exponential solution, leaving us with the trigonometric one (and the fact that $k < 0$ to satisfy this).
 
-If $a^2 - 4b = 0$, then $\lambda _1 = \lambda 2 = - \frac{a}{2}$.
-
-We know that one of the solution is $y_1 = e^{-\frac{a}{2}x}$, but we need one more.
-
-We can try $y_2 = xe^{-\frac{a}{2} x}$, and we will notice that this indeed works.
-
-Hence, our solution is of the form:
+Thus we get:
 $$
-y = (c_1 + c_2x) e^{-\frac{a}{2} x} 
+X = a \cos \sqrt{-kx} + b \sin \sqrt{-kx}
 $$
 
-
-##### Complex roots
-
-If $a^2 - 4b < 0$, then we have complex roots.
-
-The solution is the same as in the [distinct roots](#Distinct-roots) case, but we can simplify:
-
+We then solve for $T$ to get:
 $$
-\begin{align*}
-y &= c_1 e^{\lambda _1 x} + c_2 e^{\lambda_2 x} \\
-&= c_1 e^{\frac{-a + \sqrt{a^2 - 4b}}{2} x} + c_2 e^{\frac{-a - \sqrt{a^2 - 4b}}{2} x} \\
-&= e^{\frac{-a}{2} x} \left(c_1 e^{\frac{\sqrt{a^2 -4b}}{2}x} + c_2 e^{-\frac{\sqrt{a^2 -4b}}{2}x} \right) \\
-&= e^{\frac{-a}{2} x} \left(c_1 e^{\frac{\sqrt{4b - a^2}}{2} ix} + c_2 e^{-\frac{\sqrt{4b - a^2}}{2} ix} \right) \\
-&= e^{\frac{-a}{2} x} \left(c_1 e^{\omega ix} + c_2 e^{-\omega ix} \right) \quad \omega = \frac{\sqrt{4b - a^2}}{2} = \sqrt{b -\frac{a^2}{4}}\\
-&= e^{\frac{-a}{2} x} \left(c_1 \left(\cos \omega x + i \sin \omega x \right) + c_2 \left(\cos (-\omega x) + i \sin (-\omega x)  \right)  \right) \\
-&= e^{\frac{-a}{2} x} \left((c_1 + c_2) \cos \omega x + (c_1 - c_2) i \sin \omega x \right)\\
-&= e^{\frac{-a}{2} x} \left(C_1 \cos \omega x + C_2 \sin \omega x \right) \quad C_1 = c_1 + c_2, C_2 = (c_1 - c_2) i\\
-\end{align*}
+T = de^{2kt}
 $$
 
-### Non-homogeneous DE
-
-$\theorem$:
-A general solution of the non-homogeneous DE has the form:
+Thus, our solution is of the form:
 $$
-y(x) = y_h(x) = y_p(x)
+u = XT = \left(a \cos \sqrt{-kx} + b \sin \sqrt{-kx} \right) de^{2kt}
 $$
 
-where $y_h(x) = c_1y_1(x) + c_2 y_2(x)$ is a general solution to the homogeneous DE,
-and  $y_p(x)$ is _any_ solution to the non-homogeneous DE.
+Since $T \neq 0$ for all $t$, we must have $X(0) = 0$ and $X(L) = 0$.
+Substituting, we would arrive at $a = 0, b\sin (3\sqrt{-k}) = 0$.
 
+We wouldn't want $a$ and $b$ to both be $0$ (else $X = 0$ which isn't interesting), thus 
+we would get $\sin (3 \sqrt{-k}) = 0$
 
-There are 2 ways to find $y_p(x)$:
-
-#### Solving algebraically
-
-Recall: 
-
+Hence $\sqrt{-k} = \frac{n \pi}{3}$.
+And our equation becomes:
 $$
-y'' + p(x) y' + q(x) y = F(x)
-$$
-
-We can solve algebraically, depending on the form of $F(x)$.
-
-
-##### Polynomial
-
-
-We set $y$ as a polynomial with the same order as $F(x)$, with unknown coefficients.
-We differentiate and compare the terms to get the value of the coefficients.
-
-
-
-$\example$
-
-To solve $y'' - 4y' + y = x^2 +1$, we set $y = Ax^2 + Bx + C$.
-
-Then, 
-$$
-\begin{gather*}
-2A - 4(2Ax + B) + Ax^2 + Bx + C = x^2 + 1 \\
-Ax^2 + (B - 8A)x + 2A - 4B + C = x^2 + 1\\
-\Rightarrow A = 1 \\
-B - 8A = 0 \Rightarrow B = 8 \\
-2A - 4B + C = 1 \Rightarrow C = 31 \\
-y_p(x) = x^2 + 8x + 31
-\end{gather*}
+u =   b \sin \frac{n \pi x}{3} de^{2kt}
+=  B \sin \frac{n \pi x}{3} e^{-2n^2 \pi^2 t / 9}
 $$
 
-
-
-##### Exponential
-
-
-Set $y = u e^{kx}$ for some function $u$.
-
-Then the substitution will reduce it into a [polynomial case](#Polynomial).
-
-
-##### Trigonometric
-
-
-We use $y = 
-
-
-#### Variation of parameters
-
-$\theorem$:
-Given the homogeneous solutions, $y_1, y_2$,
-a particular solution is
+Lastly, since $u(x, 0) = f(x) = 5 \sin 4 \pi x$, we can compare this with our equation and get:
 $$
-y_p(x) = u' y_1' + v' y_2 '
+u(x, 0) =  B \sin \frac{n \pi x}{3} = 5 \sin 4 \pi x
+$$
+Thus, $B = 5, n = 12$.
+Hence, our solution is:
+$$
+u = 5e^{-32\pi^2t} \sin 4 \pi x
 $$
 
-where:
-$$
-u = - \int \frac{y_2 F(x)}{y_1 y_2 ' - y_1 ' y_2} \quad
-v = \int \frac{y_1 F(x)}{y_1 y_2 ' - y_1 ' y_2}
-$$
+$QED$
+</div>
+</details>
+
+
+
+```python
+func = lambda x, t: 5 * np.exp(-32 * np.pi**2 * t) * np.sin(4 * np.pi * x)
+
+ani = plot(func, np.pi, 0.02)
+HTML(ani.to_jshtml())
+```
+
+From here, we can see that initially there are regions of high temperature and low temperature.
+Then the system quickly dissipates the energy across the $x$-axis, and over time, the temperature becomes homogeneous across the bar, which fits our intuition.
