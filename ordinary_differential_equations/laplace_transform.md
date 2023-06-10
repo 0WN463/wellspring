@@ -134,6 +134,7 @@ f(t) = e^{iwt} = \cos wt + i \sin t \\
 F(s) = \frac{1}{s-iw} = \frac{s + iw}{s^2 + w^2}
 }
 $$
+Then we equate the real and imaginary parts to get our result.
 
 For (5), we solve it directly:
 $$
@@ -435,9 +436,11 @@ sY - y(0) = -kY + 100e^{-s}
 $$
 
 $$
-Y = \frac{100e^{-s} + 100}{s+k}
-= 100e^{-kt} + 100e^{-k(t-1)} u(t-1)
+\displaylines{
+Y = \frac{100e^{-s} + 100}{s+k} = \frac{100}{s+k} \frac{100e^{-s}}{s+k}\\
+y = 100e^{-kt} + 100e^{-k(t-1)} u(t-1)
 = 100 (0.5)^t + 100 (0.5)^{t-1} u(t-1)
+}
 $$
 </div>
 </details>

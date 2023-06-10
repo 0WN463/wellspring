@@ -116,10 +116,12 @@ Thus, we need $y$ to be a function of $x$ and $t$.
 
 Using the above assumptions, we arrive at the following constraints:
 $$
-f(t, 0) = 0
-f(t, \pi) = 0
-f(0, x) = f(x)
-$\dels{y}{x} = 0$
+\displaylines{
+f(t, 0) = 0 \\
+f(t, \pi) = 0 \\
+f(0, x) = f(x) \\
+\dels{y}{x} = 0
+}
 $$
 
 Using some physics, we would arrive at the following:
