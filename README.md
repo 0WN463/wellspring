@@ -31,6 +31,7 @@ env PYTHONPATH=$(pwd) jupyter lab
 7. real_time_systems
 8. linear_algebra
 9. multivariable_calculus
+10. ordinary_differential_equations/
 
 ### Some minor tweaks required
 1. algorithm analysis
@@ -44,8 +45,7 @@ env PYTHONPATH=$(pwd) jupyter lab
 5. linear_optimization
 
 ## Future modules
-2. Multivariable differential equations
-3. Basic circuitry
+1. Basic circuitry
 
 ## Contribution
 
