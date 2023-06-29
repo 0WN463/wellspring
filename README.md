@@ -36,9 +36,9 @@ env PYTHONPATH=$(pwd) jupyter lab
 ### Some minor tweaks required
 1. algorithm analysis
 2. ai
+3. computer_networks
 
 ### WIP
-1. computer_networks
 2. computer_vision
 3. discrete_structures
 4. natural_language_processing
