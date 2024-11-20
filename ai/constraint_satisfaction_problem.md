@@ -52,7 +52,7 @@ This brings our search down to $4^4 = 256$ states.
 
 <!-- #region -->
 
-### Backtrack Seach (without inference)
+### Backtrack Search (without inference)
 #### Intuition
 Suppose we solve this problem logically.
 Consider the case where we place a queen in the cell $(1,1)$, as per below.
@@ -97,7 +97,7 @@ Total states = $1 + 4 + 8 + 4 = 17$, which is much less than $4^3=64$ by the nai
 
 #### Pseudocode
 ``` python
-BacktrackSearch(prob, assign) # prob is the problem, assign is the current assignment of variables
+BacktrackSearch(prob, assign) # prob is the problem, assign is the current assignment of variables, note this only finds one possible assignment
     if AllVarsAreAssigned(prob, assign)
         return assign
     
@@ -109,7 +109,7 @@ BacktrackSearch(prob, assign) # prob is the problem, assign is the current assig
             
         result = BacktrackSearch(prob, assign)
         
-        if(result != failure)
+        if (result != failure)
             return result
 
         remove {var=value} from assignemnt
@@ -117,14 +117,6 @@ BacktrackSearch(prob, assign) # prob is the problem, assign is the current assig
     return failure
 ```
 
-
-```python
-PossibleValuesOfVar(var,prob,assign)
-    if var is in assign
-        return assignment of var in assign
-    else
-        return Domain of var
-```
 The pseudo code is written vaguely to allow for generalization to different problems.
 
 <!-- #endregion -->
@@ -202,7 +194,7 @@ with count(backtrack_search, globals()) as num_function_calls:
 Note that the number of function calls is slightly different from the number of state explored, because we did not count the number of invalid states that the AI considered for a given assignment.
 
 
-### Backtrack Seach (with inference) <a id="backtrack-search"></a>
+### Backtrack Search (with inference) <a id="backtrack-search"></a>
 We can model the problem as a CSP with the following parameters:
 * Variables: $\{x_1, \dots, x_4\}$, where $x_i$ is the row number of the queen in the $i^{ith}$ column
 * Domain of variables: $D_i = \{1, 2, 3, 4\}$ for $1 \leq i \leq 4$, since each queen can take any row.
@@ -284,7 +276,7 @@ BacktrackSearch(prob, assign, inferences)
         if (inference != failure)
             result = BackTrackSearch(prob, assign, inferences)
 
-        if(result != failure)
+        if (result != failure)
             return result
 
         remove {var=value} and inference from inferences
@@ -433,6 +425,7 @@ For faster, but shallower inferences, we can:
 
 #### Ordering
 Notice that if within our unassigned variable, if there exists one that can only take one value, it is sensible try to assign this variable first instead of the others, so that we consider less states down the line.
+
 Hence, the heuristics to choose variables are:
 * Minimum remaining value: Select the variable with the least possible values
 * Degree heuristic: Select the variable that is in the largest number of constraints on unassigned variables
