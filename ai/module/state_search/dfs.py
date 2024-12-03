@@ -2,6 +2,7 @@ from __future__ import annotations
 from .state import State, Cost, GoalFunc
 from .decorator import decorate_if, to_graph_search
 
+
 def make_dfs(is_graph_search: bool):
     @decorate_if(to_graph_search, is_graph_search)
     def search(s: State, goal_func: GoalFunc) -> Cost | None:
@@ -17,4 +18,3 @@ def make_dfs(is_graph_search: bool):
         return None
 
     return search
-
