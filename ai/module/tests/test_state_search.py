@@ -1,6 +1,6 @@
 from __future__ import annotations
 import unittest
-from state_search import state, dfs, dls, ids
+from state_search import state, dfs, dls, ids, bfs
 from dataclasses import dataclass
 from typing import Callable, Literal, TypeAlias
 import sys
@@ -132,7 +132,7 @@ table_inputs = [
 ]
 
 
-class TestDFSTreeTable(unittest.TestCase):
+class TestTable(unittest.TestCase):
     def test_dfs_tree(self) -> None:
         expecteds: list[Expectation] = [
             "correct",
@@ -228,6 +228,38 @@ class TestDFSTreeTable(unittest.TestCase):
 
         self._table(expecteds, lambda s,
                     goal_func: ids.make_ids(True)(s, goal_func))
+
+    def test_bfs_tree(self) -> None:
+        expecteds: list[Expectation] = [
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "nonterminate",
+        ]
+
+        self._table(expecteds, lambda s,
+                    goal_func: bfs.make_bfs(False)(s, goal_func))
+
+    def test_bfs_graph(self) -> None:
+        expecteds: list[Expectation] = [
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+            "correct",
+        ]
+
+        self._table(expecteds, lambda s,
+                    goal_func: bfs.make_bfs(True)(s, goal_func))
 
     def _table(self, expecteds: list[Expectation], func: FuncUnderTest) -> None:
         test_cases = [TestCase(
