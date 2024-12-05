@@ -4,6 +4,19 @@ from state_search import state, dfs, dls, ids, bfs
 from dataclasses import dataclass
 from typing import Callable, Literal, TypeAlias
 import sys
+import signal
+
+class timeout:
+    def __init__(self, seconds=1, error_message='Timeout'):
+        self.seconds = seconds
+        self.error_message = error_message
+    def handle_timeout(self, signum, frame):
+        raise TimeoutError(self.error_message)
+    def __enter__(self):
+        signal.signal(signal.SIGALRM, self.handle_timeout)
+        signal.alarm(self.seconds)
+    def __exit__(self, type, value, traceback):
+        signal.alarm(0)
 
 
 @dataclass
@@ -275,12 +288,15 @@ class TestTable(unittest.TestCase):
 
             with self.subTest(t.input.name):
                 if t.expected == "nonterminate":
-                    with self.assertRaises(RecursionError, msg="should not terminate"):
-                        t.func_under_test(t.input.start, goal_func)
+
+                    with self.assertRaises(TimeoutError, msg="should not terminate"):
+                        with timeout(seconds=1):
+                            t.func_under_test(t.input.start, goal_func)
 
                     continue
 
-                res = t.func_under_test(t.input.start, goal_func)
+                with timeout(seconds=1):
+                    res = t.func_under_test(t.input.start, goal_func)
 
                 if t.expected == "correct":
                     self.assertEqual(res, state.Cost(
@@ -291,7 +307,6 @@ class TestTable(unittest.TestCase):
                 else:
                     self.assertEqual(res, state.Cost(
                         t.expected), msg=f"should get wrong distance of {t.expected}")
-
 
 class TestDFSDepthLimited(unittest.TestCase):
     def test_line_graph_exact_depth_correct(self):
