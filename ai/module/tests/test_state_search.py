@@ -7,17 +7,16 @@ import sys
 import signal
 
 class timeout:
-    def __init__(self, seconds=1, error_message='Timeout'):
+    def __init__(self, seconds=0.001, error_message='Timeout'):
         self.seconds = seconds
         self.error_message = error_message
     def handle_timeout(self, signum, frame):
         raise TimeoutError(self.error_message)
     def __enter__(self):
-        signal.signal(signal.SIGALRM, self.handle_timeout)
-        signal.alarm(self.seconds)
+        signal.setitimer(signal.ITIMER_VIRTUAL, self.seconds)
+        signal.signal(signal.SIGVTALRM, self.handle_timeout)
     def __exit__(self, type, value, traceback):
-        signal.alarm(0)
-
+        signal.setitimer(signal.ITIMER_VIRTUAL, 0)
 
 @dataclass
 class Input:
@@ -289,13 +288,13 @@ class TestTable(unittest.TestCase):
             with self.subTest(t.input.name):
                 if t.expected == "nonterminate":
 
-                    with self.assertRaises(TimeoutError, msg="should not terminate"):
-                        with timeout(seconds=1):
+                    with self.assertRaises((TimeoutError, RecursionError), msg="should not terminate"):
+                        with timeout():
                             t.func_under_test(t.input.start, goal_func)
 
                     continue
 
-                with timeout(seconds=1):
+                with timeout():
                     res = t.func_under_test(t.input.start, goal_func)
 
                 if t.expected == "correct":
