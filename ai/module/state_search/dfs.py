@@ -37,9 +37,10 @@ def make_dfs(is_graph_search: bool, use_stack=True):
 
             for c in it:
                 if is_graph_search and c.state in visited:
-                        continue
+                    continue
 
-                stack.append((c.state, iter(c.state.children()), c.cost + cost))
+                stack.append(
+                    (c.state, iter(c.state.children()), c.cost + cost))
                 break
             else:
                 stack.pop()

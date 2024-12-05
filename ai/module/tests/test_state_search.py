@@ -6,17 +6,22 @@ from typing import Callable, Literal, TypeAlias
 import sys
 import signal
 
+
 class timeout:
     def __init__(self, seconds=0.001, error_message='Timeout'):
         self.seconds = seconds
         self.error_message = error_message
+
     def handle_timeout(self, signum, frame):
         raise TimeoutError(self.error_message)
+
     def __enter__(self):
         signal.setitimer(signal.ITIMER_VIRTUAL, self.seconds)
         signal.signal(signal.SIGVTALRM, self.handle_timeout)
+
     def __exit__(self, type, value, traceback):
         signal.setitimer(signal.ITIMER_VIRTUAL, 0)
+
 
 @dataclass
 class Input:
@@ -306,6 +311,7 @@ class TestTable(unittest.TestCase):
                 else:
                     self.assertEqual(res, state.Cost(
                         t.expected), msg=f"should get wrong distance of {t.expected}")
+
 
 class TestDFSDepthLimited(unittest.TestCase):
     def test_line_graph_exact_depth_correct(self):

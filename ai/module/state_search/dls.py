@@ -55,9 +55,10 @@ def make_dls(is_graph_search: bool, use_stack=True):
 
             for c in it:
                 if is_graph_search and c.state in visited:
-                        continue
+                    continue
 
-                stack.append((c.state, iter(c.state.children()), c.cost + cost, depth-1))
+                stack.append(
+                    (c.state, iter(c.state.children()), c.cost + cost, depth-1))
                 break
             else:
                 stack.pop()
